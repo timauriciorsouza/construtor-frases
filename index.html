@@ -84,7 +84,9 @@ body::before {
 .modal-btn:active { transform: translateY(3px); }
 .modal-btn.again { background: linear-gradient(135deg,var(--c5),var(--c5d)); }
 .modal-btn.home { background: linear-gradient(135deg,var(--c3),var(--c3d)); }
-#screen-settings { padding-bottom: 30px; }
+
+/* ===== SETTINGS ===== */
+#screen-settings { padding-bottom: 30px; overflow-y: auto; }
 .settings-section { padding: 0 16px; }
 .settings-title { font-family: 'Fredoka One', cursive; font-size: 1.2rem; margin: 16px 0 10px; color: #555; }
 .settings-form { background: white; border-radius: 20px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,.07); }
@@ -95,25 +97,49 @@ body::before {
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .add-btn { width: 100%; padding: 14px; border-radius: 14px; border: none; font-family: 'Fredoka One', cursive; font-size: 1.1rem; cursor: pointer; color: white; background: linear-gradient(135deg,var(--c3),var(--c4)); box-shadow: 0 5px 0 rgba(95,39,205,.3); transition: transform .15s; margin-top: 4px; }
 .add-btn:active { transform: translateY(3px); }
+.add-btn.orange { background: linear-gradient(135deg,var(--c2),var(--c1)); box-shadow: 0 5px 0 rgba(204,122,30,.4); }
 .items-list { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
 .item-row { display: flex; align-items: center; gap: 10px; background: white; border-radius: 14px; padding: 12px 16px; box-shadow: 0 3px 10px rgba(0,0,0,.06); }
 .item-row-info { flex: 1; }
 .item-row-info strong { font-weight: 800; font-size: .95rem; }
 .item-row-info span { display: block; font-size: .8rem; color: #aaa; }
-.del-btn { background: #FFE5E5; color: var(--c1); border: none; border-radius: 10px; padding: 8px 12px; cursor: pointer; font-size: 1rem; font-weight: 800; }
+.del-btn { background: #FFE5E5; color: var(--c1); border: none; border-radius: 10px; padding: 8px 12px; cursor: pointer; font-size: 1rem; font-weight: 800; flex-shrink: 0; }
+.edit-btn { background: var(--c3l); color: var(--c3d); border: none; border-radius: 10px; padding: 8px 12px; cursor: pointer; font-size: 1rem; font-weight: 800; flex-shrink: 0; }
 .emoji-options { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
 .ep-btn { font-size: 1.8rem; background: #f5f5f5; border: 2.5px solid transparent; border-radius: 12px; padding: 6px 10px; cursor: pointer; transition: all .15s; }
 .ep-btn.selected { border-color: var(--c3); background: var(--c3l); }
+
+/* ===== EDIT WORDS SCREEN ===== */
+#screen-edit-words { padding-bottom: 30px; overflow-y: auto; }
+.word-edit-item { display: flex; align-items: center; gap: 10px; background: white; border-radius: 14px; padding: 12px 16px; box-shadow: 0 3px 10px rgba(0,0,0,.06); margin-bottom: 8px; }
+.word-edit-item .we-emoji { font-size: 1.8rem; flex-shrink: 0; width: 40px; text-align: center; }
+.word-edit-item .we-info { flex: 1; }
+.word-edit-item .we-info strong { font-weight: 800; display: block; }
+.word-edit-item .we-info small { color: #aaa; font-size: .8rem; }
+.we-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+/* Edit modal */
+#edit-word-modal .modal-card { text-align: left; padding: 28px 24px; }
+#edit-word-modal .modal-card h3 { font-family: 'Fredoka One', cursive; font-size: 1.3rem; margin-bottom: 16px; text-align: center; }
+.save-btn { width: 100%; padding: 14px; border-radius: 14px; border: none; font-family: 'Fredoka One', cursive; font-size: 1.1rem; cursor: pointer; color: white; background: linear-gradient(135deg,var(--c5),var(--c5d)); box-shadow: 0 5px 0 rgba(10,191,118,.4); transition: transform .15s; margin-top: 8px; }
+.save-btn:active { transform: translateY(3px); }
+
 .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px); background: #333; color: white; padding: 12px 24px; border-radius: 50px; font-weight: 800; font-size: .9rem; opacity: 0; transition: all .3s; z-index: 300; white-space: nowrap; }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 .confetti-piece { position: fixed; width: 10px; height: 10px; border-radius: 2px; animation: confettiFall 3s ease-out forwards; z-index: 500; pointer-events: none; }
 @keyframes confettiFall { 0%{transform:translateY(-20px) rotate(0deg);opacity:1} 100%{transform:translateY(100vh) rotate(720deg);opacity:0} }
 .manage-btn { display: block; margin: 0 auto; padding: 12px 28px; border-radius: 50px; border: none; background: var(--c7); color: #7a5800; font-family: 'Fredoka One', cursive; font-size: 1.05rem; cursor: pointer; box-shadow: 0 5px 0 var(--c7d); transition: transform .15s; }
 .manage-btn:active { transform: translateY(3px); }
+.tab-row { display: flex; gap: 8px; padding: 0 16px 4px; }
+.tab-pill { flex: 1; padding: 10px; border-radius: 50px; border: 2.5px solid #eee; background: white; font-family: 'Fredoka One', cursive; font-size: .95rem; cursor: pointer; color: #aaa; transition: all .2s; text-align: center; }
+.tab-pill.active { border-color: var(--c3); background: var(--c3l); color: var(--c3d); }
+.tab-section { display: none; }
+.tab-section.active { display: block; }
 </style>
 </head>
 <body>
 
+<!-- HOME -->
 <div id="screen-home" class="screen active">
   <div style="padding:24px 20px 0; text-align:center;">
     <div class="home-mascot">🌈</div>
@@ -126,6 +152,7 @@ body::before {
   </div>
 </div>
 
+<!-- BUILDER -->
 <div id="screen-builder" class="screen">
   <div class="top-bar">
     <button class="icon-btn back" onclick="goTo('home')">←</button>
@@ -151,13 +178,22 @@ body::before {
   </div>
 </div>
 
+<!-- SETTINGS -->
 <div id="screen-settings" class="screen">
   <div class="top-bar">
     <button class="icon-btn back" onclick="goTo('home')">←</button>
     <h1>⚙️ Gerenciar</h1>
     <div style="width:52px;"></div>
   </div>
-  <div class="settings-section">
+
+  <div class="tab-row">
+    <button class="tab-pill active" onclick="switchTab('tab-perguntas')">❓ Perguntas</button>
+    <button class="tab-pill" onclick="switchTab('tab-add-word')">➕ Palavra</button>
+    <button class="tab-pill" onclick="switchTab('tab-edit-word')">✏️ Editar</button>
+  </div>
+
+  <!-- TAB: Perguntas -->
+  <div id="tab-perguntas" class="tab-section active settings-section">
     <div class="settings-title">➕ Nova Pergunta</div>
     <div class="settings-form">
       <div class="form-group">
@@ -181,9 +217,12 @@ body::before {
       </div>
       <button class="add-btn" onclick="addQuestion()">Adicionar Pergunta ✨</button>
     </div>
+    <div class="settings-title">Perguntas existentes</div>
     <div class="items-list" id="questions-list"></div>
   </div>
-  <div class="settings-section" style="margin-top:8px;">
+
+  <!-- TAB: Adicionar Palavra -->
+  <div id="tab-add-word" class="tab-section settings-section">
     <div class="settings-title">📝 Nova Palavra</div>
     <div class="settings-form">
       <div class="form-group"><label>Para qual pergunta?</label><select id="new-w-q" onchange="updateStepSelector()"></select></div>
@@ -200,8 +239,41 @@ body::before {
       <button class="add-btn" onclick="addWord()">Adicionar Palavra ✨</button>
     </div>
   </div>
+
+  <!-- TAB: Editar Palavras Existentes -->
+  <div id="tab-edit-word" class="tab-section settings-section">
+    <div class="settings-title">✏️ Editar Palavras Existentes</div>
+    <div class="form-group" style="margin-top:4px;">
+      <label>Selecione a pergunta</label>
+      <select id="edit-q-select" onchange="renderWordEditList()"></select>
+    </div>
+    <div class="form-group">
+      <label>Selecione a etapa</label>
+      <select id="edit-step-select" onchange="renderWordEditList()"></select>
+    </div>
+    <div id="word-edit-list" class="items-list"></div>
+  </div>
 </div>
 
+<!-- EDIT WORD MODAL -->
+<div class="modal-overlay" id="edit-word-modal">
+  <div class="modal-card" style="max-width:360px;">
+    <h3>✏️ Editar Palavra</h3>
+    <div class="form-group"><label>Palavra</label><input type="text" id="ew-text" /></div>
+    <div class="form-row">
+      <div class="form-group"><label>Emoji</label><input type="text" id="ew-emoji" maxlength="4" style="font-size:1.5rem;text-align:center;" /></div>
+      <div class="form-group"><label>Cor</label>
+        <select id="ew-color">
+          <option value="c1">🔴 Vermelho</option><option value="c2">🟠 Laranja</option><option value="c3">🔵 Azul</option><option value="c4">🟣 Roxo</option><option value="c5">🟢 Verde</option><option value="c6">💗 Rosa</option><option value="c7">🟡 Amarelo</option><option value="c8">🩵 Ciano</option>
+        </select>
+      </div>
+    </div>
+    <button class="save-btn" onclick="saveWordEdit()">💾 Salvar Alteração</button>
+    <button class="skip-btn" style="margin-top:10px;width:100%;display:block;" onclick="closeEditModal()">Cancelar</button>
+  </div>
+</div>
+
+<!-- CELEBRATE MODAL -->
 <div class="modal-overlay" id="celebrate-modal">
   <div class="modal-card">
     <div class="modal-emoji">🎊</div>
@@ -232,19 +304,54 @@ function defaultData() {
     { id:'q1', text:'O que você quer fazer?', emoji:'🤔', color:'c3', steps:[
       { label:'EU', fixed:true, words:[{text:'Eu',emoji:'🧒',color:'c5',w:1}]},
       { label:'QUERO', words:[{text:'quero',emoji:'💛',color:'c7',w:5},{text:'gosto de',emoji:'❤️',color:'c1',w:3},{text:'adoro',emoji:'😍',color:'c6',w:2}]},
-      { label:'O QUÊ', words:[{text:'brincar',emoji:'🎮',color:'c3',w:5},{text:'desenhar',emoji:'🎨',color:'c6',w:4},{text:'dançar',emoji:'💃',color:'c1',w:3},{text:'cantar',emoji:'🎵',color:'c4',w:3},{text:'correr',emoji:'🏃',color:'c5',w:3},{text:'pular',emoji:'🦘',color:'c2',w:2},{text:'nadar',emoji:'🏊',color:'c8',w:2},{text:'ver TV',emoji:'📺',color:'c7',w:4},{text:'ler livros',emoji:'📚',color:'c2',w:2},{text:'jogar bola',emoji:'⚽',color:'c5',w:4}]},
+      { label:'O QUÊ', words:[
+        {text:'brincar',emoji:'🎮',color:'c3',w:5},
+        {text:'no parque',emoji:'🌳',color:'c5',w:4},
+        {text:'na brinquedoteca',emoji:'🧸',color:'c6',w:4},
+        {text:'tablet',emoji:'📱',color:'c8',w:4},
+        {text:'dançar',emoji:'💃',color:'c1',w:3},
+        {text:'cantar',emoji:'🎵',color:'c4',w:3},
+        {text:'correr',emoji:'🏃',color:'c5',w:3},
+        {text:'pular',emoji:'🦘',color:'c2',w:2},
+        {text:'nadar',emoji:'🏊',color:'c8',w:2},
+        {text:'ver TV',emoji:'📺',color:'c7',w:4},
+        {text:'ler livros',emoji:'📚',color:'c2',w:2},
+        {text:'jogar bola',emoji:'⚽',color:'c5',w:4}
+      ]},
       { label:'QUANDO', words:[{text:'agora!',emoji:'⚡',color:'c1',w:5},{text:'hoje',emoji:'📅',color:'c3',w:4},{text:'amanhã',emoji:'🌅',color:'c2',w:3},{text:'no final de semana',emoji:'🎉',color:'c5',w:3},{text:'de tarde',emoji:'🌇',color:'c6',w:2}]}
     ]},
     { id:'q2', text:'Onde você vai?', emoji:'🗺️', color:'c2', steps:[
       { label:'EU', fixed:true, words:[{text:'Eu',emoji:'🧒',color:'c5',w:1}]},
       { label:'VOU', words:[{text:'vou',emoji:'🚶',color:'c3',w:5},{text:'quero ir',emoji:'👉',color:'c2',w:3}]},
-      { label:'PARA ONDE', words:[{text:'ao parque',emoji:'🌳',color:'c5',w:5},{text:'à escola',emoji:'🏫',color:'c3',w:5},{text:'à casa da vovó',emoji:'👵',color:'c6',w:4},{text:'ao mercado',emoji:'🛒',color:'c2',w:3},{text:'à praia',emoji:'🏖️',color:'c8',w:3},{text:'ao cinema',emoji:'🎬',color:'c4',w:2},{text:'à piscina',emoji:'🏊',color:'c8',w:2},{text:'ao parquinho',emoji:'🛝',color:'c5',w:4},{text:'ao médico',emoji:'🏥',color:'c1',w:2},{text:'ao shopping',emoji:'🏬',color:'c7',w:3}]},
+      { label:'PARA ONDE', words:[
+        {text:'ao parque',emoji:'🌳',color:'c5',w:5},
+        {text:'à escola',emoji:'🏫',color:'c3',w:5},
+        {text:'à casa da vovó',emoji:'👵',color:'c6',w:4},
+        {text:'ao mercado',emoji:'🛒',color:'c2',w:3},
+        {text:'à praia',emoji:'🏖️',color:'c8',w:3},
+        {text:'ao cinema',emoji:'🎬',color:'c4',w:2},
+        {text:'à piscina',emoji:'🏊',color:'c8',w:2},
+        {text:'ao parquinho',emoji:'🛝',color:'c5',w:4},
+        {text:'ao médico',emoji:'🏥',color:'c1',w:2},
+        {text:'ao shopping',emoji:'🏬',color:'c7',w:3},
+        {text:'à pizzaria',emoji:'🍕',color:'c1',w:4},
+        {text:'ao pula-pula',emoji:'🤸',color:'c6',w:5}
+      ]},
       { label:'COM QUEM', words:[{text:'com mamãe',emoji:'👩',color:'c6',w:5},{text:'com papai',emoji:'👨',color:'c3',w:5},{text:'com a família',emoji:'👨‍👩‍👦',color:'c7',w:4},{text:'com meu amigo',emoji:'👫',color:'c5',w:3},{text:'sozinho',emoji:'🙋',color:'c2',w:2}]}
     ]},
     { id:'q3', text:'O que você quer comer?', emoji:'🍽️', color:'c1', steps:[
       { label:'EU', fixed:true, words:[{text:'Eu',emoji:'🧒',color:'c5',w:1}]},
       { label:'QUERO', words:[{text:'quero comer',emoji:'😋',color:'c2',w:5},{text:'tenho fome de',emoji:'🤤',color:'c1',w:3}]},
-      { label:'O QUÊ', words:[{text:'pizza',emoji:'🍕',color:'c1',w:5},{text:'macarrão',emoji:'🍝',color:'c2',w:4},{text:'arroz e feijão',emoji:'🍚',color:'c5',w:4},{text:'sorvete',emoji:'🍦',color:'c8',w:5},{text:'fruta',emoji:'🍎',color:'c1',w:3},{text:'pão',emoji:'🍞',color:'c7',w:3},{text:'bolo',emoji:'🎂',color:'c6',w:4},{text:'chocolate',emoji:'🍫',color:'c2',w:5},{text:'biscoito',emoji:'🍪',color:'c7',w:4},{text:'suco',emoji:'🥤',color:'c5',w:3}]}
+      { label:'O QUÊ', words:[
+        {text:'pizza',emoji:'🍕',color:'c1',w:5},
+        {text:'pipoca',emoji:'🍿',color:'c7',w:5},
+        {text:'linguiça',emoji:'🌭',color:'c2',w:4},
+        {text:'frango',emoji:'🍗',color:'c2',w:4},
+        {text:'macarrão',emoji:'🍝',color:'c2',w:4},
+        {text:'arroz e feijão',emoji:'🍚',color:'c5',w:4},
+        {text:'fruta',emoji:'🍎',color:'c1',w:3},
+        {text:'suco',emoji:'🥤',color:'c5',w:3}
+      ]}
     ]},
     { id:'q4', text:'O que você gosta?', emoji:'❤️', color:'c6', steps:[
       { label:'EU', fixed:true, words:[{text:'Eu',emoji:'🧒',color:'c5',w:1}]},
@@ -272,9 +379,12 @@ function defaultData() {
   ]};
 }
 
-let data = JSON.parse(localStorage.getItem('ngram_v2') || 'null') || defaultData();
-function saveData() { localStorage.setItem('ngram_v2', JSON.stringify(data)); }
+// Always reset to updated default data (force refresh of word lists)
+const STORAGE_KEY = 'ngram_v3';
+let data = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null') || defaultData();
+function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
 
+// ===== NAV =====
 function goTo(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('screen-' + id).classList.add('active');
@@ -282,6 +392,7 @@ function goTo(id) {
   if (id === 'settings') renderSettings();
 }
 
+// ===== HOME =====
 function renderHome() {
   const c = document.getElementById('home-questions');
   c.innerHTML = '';
@@ -299,6 +410,7 @@ function renderHome() {
 }
 renderHome();
 
+// ===== BUILDER =====
 let currentQ = null, stepIndex = 0, sentence = [];
 
 function startBuilder(qid) {
@@ -379,7 +491,6 @@ function renderStep() {
 function skipStep() {
   if (stepIndex < currentQ.steps.length) { stepIndex++; if(stepIndex<currentQ.steps.length && currentQ.steps[stepIndex].fixed) autoAdvanceFixed(); else renderStep(); }
 }
-
 function clearSentence() { sentence = []; stepIndex = 0; renderSentence(); renderStep(); autoAdvanceFixed(); }
 
 function speakSentence() {
@@ -410,8 +521,18 @@ function launchConfetti() {
   }
 }
 
+// ===== SETTINGS TABS =====
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-pill').forEach(p => p.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  event.target.classList.add('active');
+  if (tabId === 'tab-edit-word') populateEditSelectors();
+}
+
 let selectedQEmoji = '🤔';
 function renderSettings() {
+  // Questions list
   const ql = document.getElementById('questions-list');
   ql.innerHTML = '';
   data.questions.forEach((q,idx) => {
@@ -419,10 +540,12 @@ function renderSettings() {
     div.innerHTML = `<div class="item-row-info"><strong>${q.emoji} ${q.text}</strong><span>${q.steps.length} etapas • ${q.steps.reduce((a,s)=>a+s.words.length,0)} palavras</span></div><button class="del-btn" onclick="deleteQuestion(${idx})">🗑️</button>`;
     ql.appendChild(div);
   });
+  // Word add selectors
   const wq = document.getElementById('new-w-q');
   wq.innerHTML = '';
   data.questions.forEach(q => { const o=document.createElement('option'); o.value=q.id; o.textContent=q.emoji+' '+q.text; wq.appendChild(o); });
   updateStepSelector();
+  // Emoji picker
   document.querySelectorAll('#q-emoji-options .ep-btn').forEach(b => {
     b.onclick = () => { document.querySelectorAll('#q-emoji-options .ep-btn').forEach(x=>x.classList.remove('selected')); b.classList.add('selected'); selectedQEmoji=b.dataset.e; };
   });
@@ -469,12 +592,95 @@ function addWord() {
   document.getElementById('new-w-emoji').value='';
 }
 
+// ===== EDIT EXISTING WORDS =====
+function populateEditSelectors() {
+  const qs = document.getElementById('edit-q-select');
+  const prev = qs.value;
+  qs.innerHTML = '';
+  data.questions.forEach(q => { const o=document.createElement('option'); o.value=q.id; o.textContent=q.emoji+' '+q.text; qs.appendChild(o); });
+  if (prev) qs.value = prev;
+  populateEditStepSelector();
+}
+
+function populateEditStepSelector() {
+  const qid = document.getElementById('edit-q-select').value;
+  const q = data.questions.find(x=>x.id===qid);
+  const ss = document.getElementById('edit-step-select');
+  ss.innerHTML = '';
+  if (!q) return;
+  q.steps.forEach((s,i) => { const o=document.createElement('option'); o.value=i; o.textContent=`Passo ${i+1}: ${s.label}`; ss.appendChild(o); });
+  document.getElementById('edit-q-select').onchange = () => { populateEditStepSelector(); renderWordEditList(); };
+  document.getElementById('edit-step-select').onchange = renderWordEditList;
+  renderWordEditList();
+}
+
+function renderWordEditList() {
+  const qid = document.getElementById('edit-q-select').value;
+  const si = parseInt(document.getElementById('edit-step-select').value);
+  const q = data.questions.find(x=>x.id===qid);
+  const list = document.getElementById('word-edit-list');
+  list.innerHTML = '';
+  if (!q || isNaN(si)) return;
+  const step = q.steps[si];
+  if (!step || !step.words.length) {
+    list.innerHTML = '<div style="text-align:center;color:#aaa;padding:20px;">Nenhuma palavra nesta etapa.</div>';
+    return;
+  }
+  step.words.forEach((w, wi) => {
+    const col = COLORS[w.color] || COLORS.c3;
+    const div = document.createElement('div'); div.className='word-edit-item';
+    div.innerHTML = `
+      <div class="we-emoji" style="background:${col.light};border-radius:12px;padding:4px;">${w.emoji}</div>
+      <div class="we-info"><strong>${w.text}</strong><small>${w.color} · peso ${w.w||3}</small></div>
+      <div class="we-actions">
+        <button class="edit-btn" onclick="openEditModal('${qid}',${si},${wi})">✏️</button>
+        <button class="del-btn" onclick="deleteWord('${qid}',${si},${wi})">🗑️</button>
+      </div>`;
+    list.appendChild(div);
+  });
+}
+
+let editTarget = null; // {qid, si, wi}
+function openEditModal(qid, si, wi) {
+  const q = data.questions.find(x=>x.id===qid);
+  const w = q.steps[si].words[wi];
+  editTarget = {qid, si, wi};
+  document.getElementById('ew-text').value = w.text;
+  document.getElementById('ew-emoji').value = w.emoji;
+  document.getElementById('ew-color').value = w.color;
+  document.getElementById('edit-word-modal').classList.add('show');
+}
+function closeEditModal() {
+  document.getElementById('edit-word-modal').classList.remove('show');
+  editTarget = null;
+}
+function saveWordEdit() {
+  if (!editTarget) return;
+  const {qid, si, wi} = editTarget;
+  const q = data.questions.find(x=>x.id===qid);
+  const text = document.getElementById('ew-text').value.trim();
+  const emoji = document.getElementById('ew-emoji').value.trim()||'💬';
+  const color = document.getElementById('ew-color').value;
+  if (!text) { showToast('⚠️ Escreva a palavra!'); return; }
+  q.steps[si].words[wi] = {...q.steps[si].words[wi], text, emoji, color};
+  saveData();
+  closeEditModal();
+  renderWordEditList();
+  showToast('✅ Palavra atualizada!');
+}
+function deleteWord(qid, si, wi) {
+  const q = data.questions.find(x=>x.id===qid);
+  q.steps[si].words.splice(wi,1);
+  saveData(); renderWordEditList(); showToast('🗑️ Palavra removida');
+}
+
 function showToast(msg) {
   const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),2500);
 }
 
 document.getElementById('celebrate-modal').addEventListener('click',function(e){ if(e.target===this)this.classList.remove('show'); });
+document.getElementById('edit-word-modal').addEventListener('click',function(e){ if(e.target===this)closeEditModal(); });
 </script>
 </body>
 </html>
