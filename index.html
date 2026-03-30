@@ -8,151 +8,215 @@
 <style>
 :root {
   --bg: #FFF8F0;
-  --c1: #FF6B6B; --c1l: #FFE5E5; --c1d: #CC4444;
-  --c2: #FF9F43; --c2l: #FFF3E0; --c2d: #CC7A1E;
-  --c3: #54A0FF; --c3l: #E8F4FF; --c3d: #2277DD;
-  --c4: #5F27CD; --c4l: #EDE7F6; --c4d: #3D1590;
-  --c5: #1DD1A1; --c5l: #E0FAF3; --c5d: #0ABF76;
-  --c6: #FF6EB4; --c6l: #FFE8F4; --c6d: #CC3D88;
-  --c7: #FECA57; --c7l: #FFFDE7; --c7d: #C9A000;
-  --c8: #48DBFB; --c8l: #E3FAFF; --c8d: #00B4D8;
-  --text: #2D2D2D;
-  --radius: 22px;
+  --c1:#FF6B6B; --c1l:#FFE5E5; --c1d:#CC4444;
+  --c2:#FF9F43; --c2l:#FFF3E0; --c2d:#CC7A1E;
+  --c3:#54A0FF; --c3l:#E8F4FF; --c3d:#2277DD;
+  --c4:#5F27CD; --c4l:#EDE7F6; --c4d:#3D1590;
+  --c5:#1DD1A1; --c5l:#E0FAF3; --c5d:#0ABF76;
+  --c6:#FF6EB4; --c6l:#FFE8F4; --c6d:#CC3D88;
+  --c7:#FECA57; --c7l:#FFFDE7; --c7d:#C9A000;
+  --c8:#48DBFB; --c8l:#E3FAFF; --c8d:#00B4D8;
+  --past-a:#7C5CBF; --past-b:#5B3FA0; --past-light:#EDE7F6;
+  --future-a:#FF9F43; --future-b:#FF6B6B; --future-light:#FFF3E0;
+  --text:#2D2D2D;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-body { font-family: 'Nunito', sans-serif; background: var(--bg); min-height: 100vh; overflow-x: hidden; }
-body::before {
-  content: ''; position: fixed; inset: 0;
-  background: radial-gradient(circle at 10% 20%, #FFE5E580 0%, transparent 40%), radial-gradient(circle at 90% 80%, #E8F4FF80 0%, transparent 40%);
-  pointer-events: none; z-index: 0;
-}
-.screen { display: none; min-height: 100vh; position: relative; z-index: 1; }
-.screen.active { display: flex; flex-direction: column; }
-.top-bar { display: flex; align-items: center; gap: 12px; padding: 16px 20px 10px; position: sticky; top: 0; background: var(--bg); z-index: 10; }
-.top-bar h1 { font-family: 'Fredoka One', cursive; font-size: 1.4rem; flex: 1; text-align: center; }
-.icon-btn { width: 52px; height: 52px; border-radius: 16px; border: none; font-size: 1.4rem; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: 900; transition: transform .15s; box-shadow: 0 4px 0 rgba(0,0,0,0.12); }
-.icon-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 rgba(0,0,0,0.12); }
-.icon-btn.back { background: #eee; color: #555; }
-#screen-home { justify-content: flex-start; align-items: center; padding: 24px 20px 30px; gap: 16px; }
-.home-mascot { font-size: 5rem; text-align: center; animation: bounce 2s infinite; }
-@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
-.home-title { text-align: center; font-family: 'Fredoka One', cursive; font-size: 2.4rem; line-height: 1.15; background: linear-gradient(135deg,#FF6B6B,#FF9F43,#54A0FF,#1DD1A1); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-.home-sub { text-align: center; font-size: 1rem; color: #777; font-weight: 700; }
-.home-questions { display: flex; flex-direction: column; gap: 14px; width: 100%; max-width: 500px; }
-.q-btn { padding: 20px 22px; border-radius: 22px; border: none; font-family: 'Fredoka One', cursive; font-size: 1.35rem; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 16px; transition: transform .15s, box-shadow .15s; width: 100%; }
-.q-btn:active { transform: translateY(5px); }
-.q-btn .q-icon { font-size: 2.4rem; flex-shrink: 0; }
-.q-btn .q-text { flex: 1; }
-.q-btn .q-arrow { font-size: 1.1rem; opacity: .7; }
-.sentence-zone { margin: 10px 14px; min-height: 100px; background: white; border-radius: 20px; padding: 14px 14px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 3px dashed #ddd; position: relative; }
-.sentence-label { font-size: 0.72rem; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; color: #aaa; margin-bottom: 8px; }
-.sentence-words { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; min-height: 52px; }
-.sentence-chip { display: flex; align-items: center; gap: 6px; padding: 9px 14px; border-radius: 50px; font-family: 'Fredoka One', cursive; font-size: 1.1rem; cursor: pointer; transition: transform .15s; animation: popIn .25s cubic-bezier(.34,1.56,.64,1); }
+* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+body { font-family:'Nunito',sans-serif; background:var(--bg); min-height:100vh; overflow-x:hidden; }
+body::before { content:''; position:fixed; inset:0; background:radial-gradient(circle at 10% 20%,#FFE5E580 0%,transparent 40%),radial-gradient(circle at 90% 80%,#E8F4FF80 0%,transparent 40%); pointer-events:none; z-index:0; }
+
+/* SCREENS */
+.screen { display:none; min-height:100vh; position:relative; z-index:1; }
+.screen.active { display:flex; flex-direction:column; }
+
+/* TOP BAR */
+.top-bar { display:flex; align-items:center; gap:12px; padding:16px 20px 10px; position:sticky; top:0; background:var(--bg); z-index:10; }
+.top-bar h1 { font-family:'Fredoka One',cursive; font-size:1.4rem; flex:1; text-align:center; }
+.icon-btn { width:52px; height:52px; border-radius:16px; border:none; font-size:1.4rem; cursor:pointer; display:flex; align-items:center; justify-content:center; font-weight:900; transition:transform .15s; box-shadow:0 4px 0 rgba(0,0,0,.12); }
+.icon-btn:active { transform:translateY(3px); box-shadow:0 1px 0 rgba(0,0,0,.12); }
+.icon-btn.back { background:#eee; color:#555; }
+
+/* ====== TENSE SELECTOR (new first screen) ====== */
+#screen-tense { justify-content:flex-start; align-items:center; padding:32px 24px 40px; gap:0; }
+.tense-mascot { font-size:5.5rem; text-align:center; animation:bounce 2s infinite; margin-bottom:10px; }
+@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
+.tense-title { font-family:'Fredoka One',cursive; font-size:2.5rem; text-align:center; line-height:1.15; background:linear-gradient(135deg,var(--past-a),var(--future-a)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:6px; }
+.tense-sub { text-align:center; font-size:1rem; color:#888; font-weight:700; margin-bottom:32px; }
+.tense-cards { display:flex; flex-direction:column; gap:18px; width:100%; max-width:460px; }
+.tense-card { padding:28px 26px; border-radius:26px; border:none; cursor:pointer; display:flex; align-items:center; gap:20px; transition:transform .15s, box-shadow .15s; width:100%; text-align:left; }
+.tense-card:active { transform:translateY(5px); }
+.tense-card .tc-icon { font-size:3.6rem; flex-shrink:0; }
+.tense-card .tc-body { flex:1; }
+.tense-card .tc-title { font-family:'Fredoka One',cursive; font-size:1.7rem; display:block; margin-bottom:4px; }
+.tense-card .tc-desc { font-size:.9rem; opacity:.85; font-weight:700; line-height:1.35; }
+.tense-card .tc-arrow { font-size:1.5rem; opacity:.7; flex-shrink:0; }
+.tense-card.past { background:linear-gradient(135deg,var(--past-a),var(--past-b)); color:white; box-shadow:0 10px 0 #4A2B8A; }
+.tense-card.future { background:linear-gradient(135deg,var(--future-a),var(--future-b)); color:white; box-shadow:0 10px 0 #CC5500; }
+
+/* tense badge no builder */
+.tense-badge { display:inline-flex; align-items:center; gap:6px; padding:5px 14px; border-radius:50px; font-weight:900; font-size:.82rem; letter-spacing:.5px; }
+.tense-badge.past { background:var(--past-light); color:var(--past-b); }
+.tense-badge.future { background:var(--future-light); color:var(--future-b); }
+
+/* HOME */
+#screen-home { justify-content:flex-start; align-items:center; padding:20px 20px 30px; gap:14px; }
+.home-tense-banner { width:100%; max-width:500px; padding:14px 20px; border-radius:18px; display:flex; align-items:center; gap:14px; }
+.home-tense-banner.past { background:linear-gradient(135deg,var(--past-a),var(--past-b)); color:white; }
+.home-tense-banner.future { background:linear-gradient(135deg,var(--future-a),var(--future-b)); color:white; }
+.home-tense-banner .htb-icon { font-size:2.2rem; }
+.home-tense-banner .htb-text { flex:1; }
+.home-tense-banner .htb-title { font-family:'Fredoka One',cursive; font-size:1.2rem; }
+.home-tense-banner .htb-sub { font-size:.82rem; opacity:.85; font-weight:700; }
+.home-tense-banner .htb-change { background:rgba(255,255,255,.25); border:none; border-radius:10px; padding:6px 12px; color:white; font-family:'Fredoka One',cursive; font-size:.9rem; cursor:pointer; flex-shrink:0; }
+.home-questions { display:flex; flex-direction:column; gap:14px; width:100%; max-width:500px; }
+.q-btn { padding:20px 22px; border-radius:22px; border:none; font-family:'Fredoka One',cursive; font-size:1.35rem; cursor:pointer; text-align:left; display:flex; align-items:center; gap:16px; transition:transform .15s, box-shadow .15s; width:100%; }
+.q-btn:active { transform:translateY(5px); }
+.q-btn .q-icon { font-size:2.4rem; flex-shrink:0; }
+.q-btn .q-text { flex:1; }
+.q-btn .q-arrow { font-size:1.1rem; opacity:.7; }
+
+/* BUILDER */
+.sentence-zone { margin:10px 14px; min-height:100px; background:white; border-radius:20px; padding:14px; box-shadow:0 4px 20px rgba(0,0,0,.08); border:3px dashed #ddd; position:relative; }
+.sentence-label { font-size:.72rem; font-weight:900; letter-spacing:1px; text-transform:uppercase; color:#aaa; margin-bottom:8px; }
+.sentence-words { display:flex; flex-wrap:wrap; gap:8px; align-items:center; min-height:52px; }
+.sentence-chip { display:flex; align-items:center; gap:6px; padding:9px 14px; border-radius:50px; font-family:'Fredoka One',cursive; font-size:1.1rem; cursor:pointer; transition:transform .15s; animation:popIn .25s cubic-bezier(.34,1.56,.64,1); }
 @keyframes popIn { from{transform:scale(0);opacity:0} to{transform:scale(1);opacity:1} }
-.sentence-chip:active { transform: scale(.9); }
+.sentence-chip:active { transform:scale(.9); }
 .sentence-chip .chip-x { font-size:.85rem; opacity:.5; margin-left:4px; }
 .sentence-placeholder { color:#ccc; font-size:.95rem; font-weight:700; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center; width:80%; }
-.sentence-actions { display: flex; gap: 10px; margin: 8px 14px; }
-.act-btn { flex: 1; padding: 14px 10px; border-radius: 16px; border: none; font-family: 'Fredoka One', cursive; font-size: 1rem; cursor: pointer; box-shadow: 0 5px 0 rgba(0,0,0,0.12); transition: transform .15s, box-shadow .15s; }
-.act-btn:active { transform: translateY(3px); box-shadow: 0 2px 0 rgba(0,0,0,0.12); }
-.act-btn.speak { background: var(--c5); color: white; }
-.act-btn.clear { background: #eee; color: #555; }
-.act-btn.celebrate { background: var(--c7); color: #7a5800; }
-.step-bar { display: flex; align-items: center; gap: 8px; padding: 8px 16px; overflow-x: auto; scrollbar-width: none; }
-.step-bar::-webkit-scrollbar { display: none; }
-.step-dot { width: 10px; height: 10px; border-radius: 50%; background: #ddd; flex-shrink: 0; transition: all .3s; }
-.step-dot.active { background: var(--c3); transform: scale(1.4); }
-.step-dot.done { background: var(--c5); }
-.cat-label { padding: 4px 16px; font-size: .9rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; color: #888; }
-.word-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 8px 14px 14px; }
-.word-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 18px 10px; border-radius: 22px; border: none; cursor: pointer; transition: transform .15s, box-shadow .15s; font-family: 'Nunito', sans-serif; font-weight: 900; animation: fadeIn .3s ease; min-height: 115px; }
+.sentence-actions { display:flex; gap:10px; margin:8px 14px; }
+.act-btn { flex:1; padding:14px 10px; border-radius:16px; border:none; font-family:'Fredoka One',cursive; font-size:1rem; cursor:pointer; box-shadow:0 5px 0 rgba(0,0,0,.12); transition:transform .15s, box-shadow .15s; }
+.act-btn:active { transform:translateY(3px); box-shadow:0 2px 0 rgba(0,0,0,.12); }
+.act-btn.speak { background:var(--c5); color:white; }
+.act-btn.clear { background:#eee; color:#555; }
+.act-btn.celebrate { background:var(--c7); color:#7a5800; }
+.step-bar { display:flex; align-items:center; gap:8px; padding:8px 16px; overflow-x:auto; scrollbar-width:none; }
+.step-bar::-webkit-scrollbar { display:none; }
+.step-dot { width:10px; height:10px; border-radius:50%; background:#ddd; flex-shrink:0; transition:all .3s; }
+.step-dot.active { background:var(--c3); transform:scale(1.4); }
+.step-dot.done { background:var(--c5); }
+.step-dot.active.past-mode { background:var(--past-a); }
+.step-dot.done.past-mode { background:var(--past-b); }
+.cat-label { padding:4px 16px; font-size:.9rem; font-weight:900; text-transform:uppercase; letter-spacing:1px; color:#888; }
+.word-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; padding:8px 14px 14px; }
+.word-btn { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; padding:18px 10px; border-radius:22px; border:none; cursor:pointer; transition:transform .15s, box-shadow .15s; font-family:'Nunito',sans-serif; font-weight:900; animation:fadeIn .3s ease; min-height:115px; }
 @keyframes fadeIn { from{opacity:0;transform:scale(.9)} to{opacity:1;transform:scale(1)} }
-.word-btn:active { transform: translateY(5px); }
-.word-btn .w-emoji { font-size: 2.8rem; line-height: 1; }
-.word-btn .w-text { font-size: 1.1rem; text-align: center; line-height: 1.2; }
-.skip-row { padding: 4px 14px 10px; display: flex; }
-.skip-btn { flex: 1; padding: 13px; border-radius: 14px; border: none; font-family: 'Fredoka One', cursive; font-size: 1rem; cursor: pointer; background: white; color: #aaa; box-shadow: 0 4px 0 rgba(0,0,0,0.08); transition: transform .15s; }
-.skip-btn:active { transform: translateY(3px); }
-.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; align-items: center; justify-content: center; padding: 24px; }
-.modal-overlay.show { display: flex; }
-.modal-card { background: white; border-radius: 28px; padding: 36px 28px; max-width: 380px; width: 100%; text-align: center; animation: popIn .35s cubic-bezier(.34,1.56,.64,1); box-shadow: 0 20px 60px rgba(0,0,0,.25); }
-.modal-emoji { font-size: 5rem; margin-bottom: 12px; }
-.modal-title { font-family: 'Fredoka One', cursive; font-size: 2rem; margin-bottom: 8px; }
-.modal-sentence { font-size: 1.3rem; font-weight: 800; margin: 16px 0; line-height: 1.5; padding: 14px; background: #f8f8f8; border-radius: 14px; color: var(--text); }
-.modal-btns { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
-.modal-btn { padding: 16px; border-radius: 16px; border: none; font-family: 'Fredoka One', cursive; font-size: 1.15rem; cursor: pointer; color: white; box-shadow: 0 5px 0 rgba(0,0,0,.15); transition: transform .15s; }
-.modal-btn:active { transform: translateY(3px); }
-.modal-btn.again { background: linear-gradient(135deg,var(--c5),var(--c5d)); }
-.modal-btn.home { background: linear-gradient(135deg,var(--c3),var(--c3d)); }
+.word-btn:active { transform:translateY(5px); }
+.word-btn .w-emoji { font-size:2.8rem; line-height:1; }
+.word-btn .w-text { font-size:1.1rem; text-align:center; line-height:1.2; }
+.skip-row { padding:4px 14px 10px; display:flex; }
+.skip-btn { flex:1; padding:13px; border-radius:14px; border:none; font-family:'Fredoka One',cursive; font-size:1rem; cursor:pointer; background:white; color:#aaa; box-shadow:0 4px 0 rgba(0,0,0,.08); transition:transform .15s; }
+.skip-btn:active { transform:translateY(3px); }
 
-/* ===== SETTINGS ===== */
-#screen-settings { padding-bottom: 30px; overflow-y: auto; }
-.settings-section { padding: 0 16px; }
-.settings-title { font-family: 'Fredoka One', cursive; font-size: 1.2rem; margin: 16px 0 10px; color: #555; }
-.settings-form { background: white; border-radius: 20px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,.07); }
-.form-group { margin-bottom: 14px; }
-.form-group label { display: block; font-weight: 800; font-size: .82rem; color: #888; margin-bottom: 6px; letter-spacing: .5px; text-transform: uppercase; }
-.form-group input, .form-group select { width: 100%; padding: 12px 14px; border-radius: 14px; border: 2.5px solid #eee; font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 700; background: #fafafa; transition: border-color .2s; }
-.form-group input:focus, .form-group select:focus { outline: none; border-color: var(--c3); }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.add-btn { width: 100%; padding: 14px; border-radius: 14px; border: none; font-family: 'Fredoka One', cursive; font-size: 1.1rem; cursor: pointer; color: white; background: linear-gradient(135deg,var(--c3),var(--c4)); box-shadow: 0 5px 0 rgba(95,39,205,.3); transition: transform .15s; margin-top: 4px; }
-.add-btn:active { transform: translateY(3px); }
-.add-btn.orange { background: linear-gradient(135deg,var(--c2),var(--c1)); box-shadow: 0 5px 0 rgba(204,122,30,.4); }
-.items-list { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
-.item-row { display: flex; align-items: center; gap: 10px; background: white; border-radius: 14px; padding: 12px 16px; box-shadow: 0 3px 10px rgba(0,0,0,.06); }
-.item-row-info { flex: 1; }
-.item-row-info strong { font-weight: 800; font-size: .95rem; }
-.item-row-info span { display: block; font-size: .8rem; color: #aaa; }
-.del-btn { background: #FFE5E5; color: var(--c1); border: none; border-radius: 10px; padding: 8px 12px; cursor: pointer; font-size: 1rem; font-weight: 800; flex-shrink: 0; }
-.edit-btn { background: var(--c3l); color: var(--c3d); border: none; border-radius: 10px; padding: 8px 12px; cursor: pointer; font-size: 1rem; font-weight: 800; flex-shrink: 0; }
-.emoji-options { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
-.ep-btn { font-size: 1.8rem; background: #f5f5f5; border: 2.5px solid transparent; border-radius: 12px; padding: 6px 10px; cursor: pointer; transition: all .15s; }
-.ep-btn.selected { border-color: var(--c3); background: var(--c3l); }
+/* MODALS */
+.modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:200; align-items:center; justify-content:center; padding:24px; }
+.modal-overlay.show { display:flex; }
+.modal-card { background:white; border-radius:28px; padding:36px 28px; max-width:380px; width:100%; text-align:center; animation:popIn .35s cubic-bezier(.34,1.56,.64,1); box-shadow:0 20px 60px rgba(0,0,0,.25); }
+.modal-emoji { font-size:5rem; margin-bottom:12px; }
+.modal-title { font-family:'Fredoka One',cursive; font-size:2rem; margin-bottom:8px; }
+.modal-sentence { font-size:1.3rem; font-weight:800; margin:16px 0; line-height:1.5; padding:14px; background:#f8f8f8; border-radius:14px; color:var(--text); }
+.modal-btns { display:flex; flex-direction:column; gap:10px; margin-top:20px; }
+.modal-btn { padding:16px; border-radius:16px; border:none; font-family:'Fredoka One',cursive; font-size:1.15rem; cursor:pointer; color:white; box-shadow:0 5px 0 rgba(0,0,0,.15); transition:transform .15s; }
+.modal-btn:active { transform:translateY(3px); }
+.modal-btn.again { background:linear-gradient(135deg,var(--c5),var(--c5d)); }
+.modal-btn.home { background:linear-gradient(135deg,var(--past-a),var(--past-b)); }
+.modal-btn.home.future { background:linear-gradient(135deg,var(--future-a),var(--future-b)); }
 
-/* ===== EDIT WORDS SCREEN ===== */
-#screen-edit-words { padding-bottom: 30px; overflow-y: auto; }
-.word-edit-item { display: flex; align-items: center; gap: 10px; background: white; border-radius: 14px; padding: 12px 16px; box-shadow: 0 3px 10px rgba(0,0,0,.06); margin-bottom: 8px; }
-.word-edit-item .we-emoji { font-size: 1.8rem; flex-shrink: 0; width: 40px; text-align: center; }
-.word-edit-item .we-info { flex: 1; }
-.word-edit-item .we-info strong { font-weight: 800; display: block; }
-.word-edit-item .we-info small { color: #aaa; font-size: .8rem; }
-.we-actions { display: flex; gap: 6px; flex-shrink: 0; }
-
-/* Edit modal */
-#edit-word-modal .modal-card { text-align: left; padding: 28px 24px; }
-#edit-word-modal .modal-card h3 { font-family: 'Fredoka One', cursive; font-size: 1.3rem; margin-bottom: 16px; text-align: center; }
-.save-btn { width: 100%; padding: 14px; border-radius: 14px; border: none; font-family: 'Fredoka One', cursive; font-size: 1.1rem; cursor: pointer; color: white; background: linear-gradient(135deg,var(--c5),var(--c5d)); box-shadow: 0 5px 0 rgba(10,191,118,.4); transition: transform .15s; margin-top: 8px; }
-.save-btn:active { transform: translateY(3px); }
-
-.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px); background: #333; color: white; padding: 12px 24px; border-radius: 50px; font-weight: 800; font-size: .9rem; opacity: 0; transition: all .3s; z-index: 300; white-space: nowrap; }
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-.confetti-piece { position: fixed; width: 10px; height: 10px; border-radius: 2px; animation: confettiFall 3s ease-out forwards; z-index: 500; pointer-events: none; }
+/* SETTINGS */
+#screen-settings { padding-bottom:30px; overflow-y:auto; }
+.settings-section { padding:0 16px; }
+.settings-title { font-family:'Fredoka One',cursive; font-size:1.2rem; margin:16px 0 10px; color:#555; }
+.settings-form { background:white; border-radius:20px; padding:20px; box-shadow:0 4px 20px rgba(0,0,0,.07); }
+.form-group { margin-bottom:14px; }
+.form-group label { display:block; font-weight:800; font-size:.82rem; color:#888; margin-bottom:6px; letter-spacing:.5px; text-transform:uppercase; }
+.form-group input, .form-group select { width:100%; padding:12px 14px; border-radius:14px; border:2.5px solid #eee; font-family:'Nunito',sans-serif; font-size:1rem; font-weight:700; background:#fafafa; transition:border-color .2s; }
+.form-group input:focus, .form-group select:focus { outline:none; border-color:var(--c3); }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.add-btn { width:100%; padding:14px; border-radius:14px; border:none; font-family:'Fredoka One',cursive; font-size:1.1rem; cursor:pointer; color:white; background:linear-gradient(135deg,var(--c3),var(--c4)); box-shadow:0 5px 0 rgba(95,39,205,.3); transition:transform .15s; margin-top:4px; }
+.add-btn:active { transform:translateY(3px); }
+.items-list { display:flex; flex-direction:column; gap:8px; margin-top:14px; }
+.item-row { display:flex; align-items:center; gap:10px; background:white; border-radius:14px; padding:12px 16px; box-shadow:0 3px 10px rgba(0,0,0,.06); }
+.item-row-info { flex:1; }
+.item-row-info strong { font-weight:800; font-size:.95rem; }
+.item-row-info span { display:block; font-size:.8rem; color:#aaa; }
+.del-btn { background:#FFE5E5; color:var(--c1); border:none; border-radius:10px; padding:8px 12px; cursor:pointer; font-size:1rem; font-weight:800; flex-shrink:0; }
+.edit-btn { background:var(--c3l); color:var(--c3d); border:none; border-radius:10px; padding:8px 12px; cursor:pointer; font-size:1rem; font-weight:800; flex-shrink:0; }
+.emoji-options { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+.ep-btn { font-size:1.8rem; background:#f5f5f5; border:2.5px solid transparent; border-radius:12px; padding:6px 10px; cursor:pointer; transition:all .15s; }
+.ep-btn.selected { border-color:var(--c3); background:var(--c3l); }
+.word-edit-item { display:flex; align-items:center; gap:10px; background:white; border-radius:14px; padding:12px 16px; box-shadow:0 3px 10px rgba(0,0,0,.06); margin-bottom:8px; }
+.word-edit-item .we-emoji { font-size:1.8rem; flex-shrink:0; width:40px; text-align:center; }
+.word-edit-item .we-info { flex:1; }
+.word-edit-item .we-info strong { font-weight:800; display:block; }
+.word-edit-item .we-info small { color:#aaa; font-size:.8rem; }
+.we-actions { display:flex; gap:6px; flex-shrink:0; }
+#edit-word-modal .modal-card { text-align:left; padding:28px 24px; }
+#edit-word-modal .modal-card h3 { font-family:'Fredoka One',cursive; font-size:1.3rem; margin-bottom:16px; text-align:center; }
+.save-btn { width:100%; padding:14px; border-radius:14px; border:none; font-family:'Fredoka One',cursive; font-size:1.1rem; cursor:pointer; color:white; background:linear-gradient(135deg,var(--c5),var(--c5d)); box-shadow:0 5px 0 rgba(10,191,118,.4); transition:transform .15s; margin-top:8px; }
+.save-btn:active { transform:translateY(3px); }
+.tab-row { display:flex; gap:8px; padding:0 16px 4px; }
+.tab-pill { flex:1; padding:10px; border-radius:50px; border:2.5px solid #eee; background:white; font-family:'Fredoka One',cursive; font-size:.95rem; cursor:pointer; color:#aaa; transition:all .2s; text-align:center; }
+.tab-pill.active { border-color:var(--c3); background:var(--c3l); color:var(--c3d); }
+.tab-section { display:none; }
+.tab-section.active { display:block; }
+.manage-btn { display:block; margin:0 auto; padding:12px 28px; border-radius:50px; border:none; background:var(--c7); color:#7a5800; font-family:'Fredoka One',cursive; font-size:1.05rem; cursor:pointer; box-shadow:0 5px 0 var(--c7d); transition:transform .15s; }
+.manage-btn:active { transform:translateY(3px); }
+.toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px); background:#333; color:white; padding:12px 24px; border-radius:50px; font-weight:800; font-size:.9rem; opacity:0; transition:all .3s; z-index:300; white-space:nowrap; }
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+.confetti-piece { position:fixed; width:10px; height:10px; border-radius:2px; animation:confettiFall 3s ease-out forwards; z-index:500; pointer-events:none; }
 @keyframes confettiFall { 0%{transform:translateY(-20px) rotate(0deg);opacity:1} 100%{transform:translateY(100vh) rotate(720deg);opacity:0} }
-.manage-btn { display: block; margin: 0 auto; padding: 12px 28px; border-radius: 50px; border: none; background: var(--c7); color: #7a5800; font-family: 'Fredoka One', cursive; font-size: 1.05rem; cursor: pointer; box-shadow: 0 5px 0 var(--c7d); transition: transform .15s; }
-.manage-btn:active { transform: translateY(3px); }
-.tab-row { display: flex; gap: 8px; padding: 0 16px 4px; }
-.tab-pill { flex: 1; padding: 10px; border-radius: 50px; border: 2.5px solid #eee; background: white; font-family: 'Fredoka One', cursive; font-size: .95rem; cursor: pointer; color: #aaa; transition: all .2s; text-align: center; }
-.tab-pill.active { border-color: var(--c3); background: var(--c3l); color: var(--c3d); }
-.tab-section { display: none; }
-.tab-section.active { display: block; }
 </style>
 </head>
 <body>
 
-<!-- HOME -->
-<div id="screen-home" class="screen active">
-  <div style="padding:24px 20px 0; text-align:center;">
-    <div class="home-mascot">🌈</div>
-    <div class="home-title">Vamos Montar<br>Frases!</div>
-    <div class="home-sub" style="margin-top:6px;">Toque numa pergunta para começar ✨</div>
+<!-- ====== TENSE SELECTOR (TELA INICIAL) ====== -->
+<div id="screen-tense" class="screen active">
+  <div class="tense-mascot">🌈</div>
+  <div class="tense-title">Vamos Montar<br>Frases!</div>
+  <div class="tense-sub">Escolha o tempo das frases de hoje</div>
+  <div class="tense-cards">
+    <button class="tense-card future" onclick="selectTense('future')">
+      <span class="tc-icon">⏩</span>
+      <span class="tc-body">
+        <span class="tc-title">Presente e Futuro</span>
+        <span class="tc-desc">O que você quer? O que vai fazer? Onde vai?</span>
+      </span>
+      <span class="tc-arrow">▶</span>
+    </button>
+    <button class="tense-card past" onclick="selectTense('past')">
+      <span class="tc-icon">⏪</span>
+      <span class="tc-body">
+        <span class="tc-title">Passado</span>
+        <span class="tc-desc">O que você fez? Onde foi? O que comeu?</span>
+      </span>
+      <span class="tc-arrow">▶</span>
+    </button>
   </div>
-  <div class="home-questions" style="padding:20px 20px 10px;" id="home-questions"></div>
-  <div style="padding: 0 20px 24px;">
+</div>
+
+<!-- ====== HOME (lista de perguntas) ====== -->
+<div id="screen-home" class="screen">
+  <div class="top-bar">
+    <button class="icon-btn back" onclick="goTo('tense')">←</button>
+    <h1 id="home-title">Perguntas</h1>
+    <div style="width:52px;"></div>
+  </div>
+  <div style="padding:0 20px 6px; display:flex; justify-content:center;">
+    <div id="home-tense-banner" class="home-tense-banner future">
+      <span class="htb-icon" id="htb-icon">⏩</span>
+      <span class="htb-text">
+        <span class="htb-title" id="htb-title">Presente e Futuro</span>
+        <span class="htb-sub" id="htb-sub">Escolha uma pergunta para montar sua frase</span>
+      </span>
+      <button class="htb-change" onclick="goTo('tense')">Trocar</button>
+    </div>
+  </div>
+  <div class="home-questions" style="padding:14px 20px 10px;" id="home-questions"></div>
+  <div style="padding:0 20px 24px;">
     <button class="manage-btn" onclick="goTo('settings')">⚙️ Gerenciar Conteúdo</button>
   </div>
 </div>
 
-<!-- BUILDER -->
+<!-- ====== BUILDER ====== -->
 <div id="screen-builder" class="screen">
   <div class="top-bar">
     <button class="icon-btn back" onclick="goTo('home')">←</button>
@@ -178,20 +242,18 @@ body::before {
   </div>
 </div>
 
-<!-- SETTINGS -->
+<!-- ====== SETTINGS ====== -->
 <div id="screen-settings" class="screen">
   <div class="top-bar">
     <button class="icon-btn back" onclick="goTo('home')">←</button>
     <h1>⚙️ Gerenciar</h1>
     <div style="width:52px;"></div>
   </div>
-
   <div class="tab-row">
-    <button class="tab-pill active" onclick="switchTab('tab-perguntas')">❓ Perguntas</button>
-    <button class="tab-pill" onclick="switchTab('tab-add-word')">➕ Palavra</button>
-    <button class="tab-pill" onclick="switchTab('tab-edit-word')">✏️ Editar</button>
+    <button class="tab-pill active" onclick="switchTab('tab-perguntas',this)">❓ Perguntas</button>
+    <button class="tab-pill" onclick="switchTab('tab-add-word',this)">➕ Palavra</button>
+    <button class="tab-pill" onclick="switchTab('tab-edit-word',this)">✏️ Editar</button>
   </div>
-
   <!-- TAB: Perguntas -->
   <div id="tab-perguntas" class="tab-section active settings-section">
     <div class="settings-title">➕ Nova Pergunta</div>
@@ -199,28 +261,21 @@ body::before {
       <div class="form-group">
         <label>Emoji</label>
         <div class="emoji-options" id="q-emoji-options">
-          <button class="ep-btn selected" data-e="🤔">🤔</button>
-          <button class="ep-btn" data-e="🌟">🌟</button>
-          <button class="ep-btn" data-e="🎯">🎯</button>
-          <button class="ep-btn" data-e="❓">❓</button>
-          <button class="ep-btn" data-e="🏠">🏠</button>
-          <button class="ep-btn" data-e="🎮">🎮</button>
-          <button class="ep-btn" data-e="🍕">🍕</button>
-          <button class="ep-btn" data-e="❤️">❤️</button>
+          <button class="ep-btn selected" data-e="🤔">🤔</button><button class="ep-btn" data-e="🌟">🌟</button><button class="ep-btn" data-e="🎯">🎯</button><button class="ep-btn" data-e="❓">❓</button><button class="ep-btn" data-e="🏠">🏠</button><button class="ep-btn" data-e="🎮">🎮</button><button class="ep-btn" data-e="🍕">🍕</button><button class="ep-btn" data-e="❤️">❤️</button>
         </div>
+      </div>
+      <div class="form-group"><label>Tempo Verbal</label>
+        <select id="new-q-tense"><option value="future">⏩ Presente / Futuro</option><option value="past">⏪ Passado</option></select>
       </div>
       <div class="form-group"><label>Texto da Pergunta</label><input type="text" id="new-q-text" placeholder="Ex: O que você quer beber?" /></div>
       <div class="form-group"><label>Cor</label>
-        <select id="new-q-color">
-          <option value="c1">🔴 Vermelho</option><option value="c2">🟠 Laranja</option><option value="c3">🔵 Azul</option><option value="c4">🟣 Roxo</option><option value="c5">🟢 Verde</option><option value="c6">💗 Rosa</option><option value="c7">🟡 Amarelo</option><option value="c8">🩵 Ciano</option>
-        </select>
+        <select id="new-q-color"><option value="c1">🔴 Vermelho</option><option value="c2">🟠 Laranja</option><option value="c3">🔵 Azul</option><option value="c4">🟣 Roxo</option><option value="c5">🟢 Verde</option><option value="c6">💗 Rosa</option><option value="c7">🟡 Amarelo</option><option value="c8">🩵 Ciano</option></select>
       </div>
       <button class="add-btn" onclick="addQuestion()">Adicionar Pergunta ✨</button>
     </div>
     <div class="settings-title">Perguntas existentes</div>
     <div class="items-list" id="questions-list"></div>
   </div>
-
   <!-- TAB: Adicionar Palavra -->
   <div id="tab-add-word" class="tab-section settings-section">
     <div class="settings-title">📝 Nova Palavra</div>
@@ -232,25 +287,16 @@ body::before {
         <div class="form-group"><label>Emoji</label><input type="text" id="new-w-emoji" placeholder="🎮" maxlength="4" style="font-size:1.5rem;text-align:center;" /></div>
       </div>
       <div class="form-group"><label>Cor</label>
-        <select id="new-w-color">
-          <option value="c1">🔴 Vermelho</option><option value="c2">🟠 Laranja</option><option value="c3">🔵 Azul</option><option value="c4">🟣 Roxo</option><option value="c5">🟢 Verde</option><option value="c6">💗 Rosa</option><option value="c7">🟡 Amarelo</option><option value="c8">🩵 Ciano</option>
-        </select>
+        <select id="new-w-color"><option value="c1">🔴 Vermelho</option><option value="c2">🟠 Laranja</option><option value="c3">🔵 Azul</option><option value="c4">🟣 Roxo</option><option value="c5">🟢 Verde</option><option value="c6">💗 Rosa</option><option value="c7">🟡 Amarelo</option><option value="c8">🩵 Ciano</option></select>
       </div>
       <button class="add-btn" onclick="addWord()">Adicionar Palavra ✨</button>
     </div>
   </div>
-
-  <!-- TAB: Editar Palavras Existentes -->
+  <!-- TAB: Editar Palavras -->
   <div id="tab-edit-word" class="tab-section settings-section">
     <div class="settings-title">✏️ Editar Palavras Existentes</div>
-    <div class="form-group" style="margin-top:4px;">
-      <label>Selecione a pergunta</label>
-      <select id="edit-q-select" onchange="renderWordEditList()"></select>
-    </div>
-    <div class="form-group">
-      <label>Selecione a etapa</label>
-      <select id="edit-step-select" onchange="renderWordEditList()"></select>
-    </div>
+    <div class="form-group" style="margin-top:4px;"><label>Selecione a pergunta</label><select id="edit-q-select" onchange="populateEditStepSelector();renderWordEditList();"></select></div>
+    <div class="form-group"><label>Selecione a etapa</label><select id="edit-step-select" onchange="renderWordEditList()"></select></div>
     <div id="word-edit-list" class="items-list"></div>
   </div>
 </div>
@@ -263,9 +309,7 @@ body::before {
     <div class="form-row">
       <div class="form-group"><label>Emoji</label><input type="text" id="ew-emoji" maxlength="4" style="font-size:1.5rem;text-align:center;" /></div>
       <div class="form-group"><label>Cor</label>
-        <select id="ew-color">
-          <option value="c1">🔴 Vermelho</option><option value="c2">🟠 Laranja</option><option value="c3">🔵 Azul</option><option value="c4">🟣 Roxo</option><option value="c5">🟢 Verde</option><option value="c6">💗 Rosa</option><option value="c7">🟡 Amarelo</option><option value="c8">🩵 Ciano</option>
-        </select>
+        <select id="ew-color"><option value="c1">🔴 Vermelho</option><option value="c2">🟠 Laranja</option><option value="c3">🔵 Azul</option><option value="c4">🟣 Roxo</option><option value="c5">🟢 Verde</option><option value="c6">💗 Rosa</option><option value="c7">🟡 Amarelo</option><option value="c8">🩵 Ciano</option></select>
       </div>
     </div>
     <button class="save-btn" onclick="saveWordEdit()">💾 Salvar Alteração</button>
@@ -281,13 +325,14 @@ body::before {
     <div class="modal-sentence" id="modal-sentence-text"></div>
     <div class="modal-btns">
       <button class="modal-btn again" onclick="resetBuilder()">🔄 Montar outra!</button>
-      <button class="modal-btn home" onclick="goTo('home')">🏠 Voltar ao início</button>
+      <button class="modal-btn home" id="modal-home-btn" onclick="goTo('home')">🏠 Voltar às perguntas</button>
     </div>
   </div>
 </div>
 <div class="toast" id="toast"></div>
 
 <script>
+// =================== COLORS ===================
 const COLORS = {
   c1:{bg:'#FF6B6B',light:'#FFE5E5',dark:'#CC4444',text:'white'},
   c2:{bg:'#FF9F43',light:'#FFF3E0',dark:'#CC7A1E',text:'white'},
@@ -299,92 +344,143 @@ const COLORS = {
   c8:{bg:'#48DBFB',light:'#E3FAFF',dark:'#00B4D8',text:'#00455e'},
 };
 
+// =================== DATA ===================
 function defaultData() {
-  return { questions: [
-    { id:'q1', text:'O que você quer fazer?', emoji:'🤔', color:'c3', steps:[
-      { label:'EU', fixed:true, words:[{text:'Eu',emoji:'🧒',color:'c5',w:1}]},
-      { label:'QUERO', words:[{text:'quero',emoji:'💛',color:'c7',w:5},{text:'gosto de',emoji:'❤️',color:'c1',w:3},{text:'adoro',emoji:'😍',color:'c6',w:2}]},
-      { label:'O QUÊ', words:[
-        {text:'brincar',emoji:'🎮',color:'c3',w:5},
-        {text:'no parque',emoji:'🌳',color:'c5',w:4},
-        {text:'na brinquedoteca',emoji:'🧸',color:'c6',w:4},
-        {text:'tablet',emoji:'📱',color:'c8',w:4},
-        {text:'dançar',emoji:'💃',color:'c1',w:3},
-        {text:'cantar',emoji:'🎵',color:'c4',w:3},
-        {text:'correr',emoji:'🏃',color:'c5',w:3},
-        {text:'pular',emoji:'🦘',color:'c2',w:2},
-        {text:'nadar',emoji:'🏊',color:'c8',w:2},
-        {text:'ver TV',emoji:'📺',color:'c7',w:4},
-        {text:'ler livros',emoji:'📚',color:'c2',w:2},
-        {text:'jogar bola',emoji:'⚽',color:'c5',w:4}
+  return {
+    future: [
+      { id:'f1', text:'O que você quer fazer?', emoji:'🤔', color:'c3', steps:[
+        { label:'EU', fixed:true, words:[{text:'Eu',emoji:'🧒',color:'c5',w:1}]},
+        { label:'QUERO', words:[{text:'quero',emoji:'💛',color:'c7',w:5},{text:'gosto de',emoji:'❤️',color:'c1',w:3},{text:'adoro',emoji:'😍',color:'c6',w:2}]},
+        { label:'O QUÊ', words:[
+          {text:'brincar',emoji:'🎮',color:'c3',w:5},{text:'no parque',emoji:'🌳',color:'c5',w:4},
+          {text:'na brinquedoteca',emoji:'🧸',color:'c6',w:4},{text:'tablet',emoji:'📱',color:'c8',w:4},
+          {text:'dançar',emoji:'💃',color:'c1',w:3},{text:'cantar',emoji:'🎵',color:'c4',w:3},
+          {text:'correr',emoji:'🏃',color:'c5',w:3},{text:'pular',emoji:'🦘',color:'c2',w:2},
+          {text:'nadar',emoji:'🏊',color:'c8',w:2},{text:'ver TV',emoji:'📺',color:'c7',w:4},
+          {text:'ler livros',emoji:'📚',color:'c2',w:2},{text:'jogar bola',emoji:'⚽',color:'c5',w:4}
+        ]},
+        { label:'QUANDO', words:[{text:'agora!',emoji:'⚡',color:'c1',w:5},{text:'hoje',emoji:'📅',color:'c3',w:4},{text:'amanhã',emoji:'🌅',color:'c2',w:3},{text:'no final de semana',emoji:'🎉',color:'c5',w:3},{text:'de tarde',emoji:'🌇',color:'c6',w:2}]}
       ]},
-      { label:'QUANDO', words:[{text:'agora!',emoji:'⚡',color:'c1',w:5},{text:'hoje',emoji:'📅',color:'c3',w:4},{text:'amanhã',emoji:'🌅',color:'c2',w:3},{text:'no final de semana',emoji:'🎉',color:'c5',w:3},{text:'de tarde',emoji:'🌇',color:'c6',w:2}]}
-    ]},
-    { id:'q2', text:'Onde você vai?', emoji:'🗺️', color:'c2', steps:[
-      { label:'EU', fixed:true, words:[{text:'Eu',emoji:'🧒',color:'c5',w:1}]},
-      { label:'VOU', words:[{text:'vou',emoji:'🚶',color:'c3',w:5},{text:'quero ir',emoji:'👉',color:'c2',w:3}]},
-      { label:'PARA ONDE', words:[
-        {text:'ao parque',emoji:'🌳',color:'c5',w:5},
-        {text:'à escola',emoji:'🏫',color:'c3',w:5},
-        {text:'à casa da vovó',emoji:'👵',color:'c6',w:4},
-        {text:'ao mercado',emoji:'🛒',color:'c2',w:3},
-        {text:'à praia',emoji:'🏖️',color:'c8',w:3},
-        {text:'ao cinema',emoji:'🎬',color:'c4',w:2},
-        {text:'à piscina',emoji:'🏊',color:'c8',w:2},
-        {text:'ao parquinho',emoji:'🛝',color:'c5',w:4},
-        {text:'ao médico',emoji:'🏥',color:'c1',w:2},
-        {text:'ao shopping',emoji:'🏬',color:'c7',w:3},
-        {text:'à pizzaria',emoji:'🍕',color:'c1',w:4},
-        {text:'ao pula-pula',emoji:'🤸',color:'c6',w:5}
+      { id:'f2', text:'Onde você vai?', emoji:'🗺️', color:'c2', steps:[
+        { label:'EU', fixed:true, words:[{text:'Eu',emoji:'🧒',color:'c5',w:1}]},
+        { label:'VOU', words:[{text:'vou',emoji:'🚶',color:'c3',w:5},{text:'quero ir',emoji:'👉',color:'c2',w:3}]},
+        { label:'PARA ONDE', words:[
+          {text:'ao parque',emoji:'🌳',color:'c5',w:5},{text:'à escola',emoji:'🏫',color:'c3',w:5},
+          {text:'à casa da vovó',emoji:'👵',color:'c6',w:4},{text:'ao mercado',emoji:'🛒',color:'c2',w:3},
+          {text:'à praia',emoji:'🏖️',color:'c8',w:3},{text:'ao cinema',emoji:'🎬',color:'c4',w:2},
+          {text:'à piscina',emoji:'🏊',color:'c8',w:2},{text:'ao parquinho',emoji:'🛝',color:'c5',w:4},
+          {text:'ao médico',emoji:'🏥',color:'c1',w:2},{text:'ao shopping',emoji:'🏬',color:'c7',w:3},
+          {text:'à pizzaria',emoji:'🍕',color:'c1',w:4},{text:'ao pula-pula',emoji:'🤸',color:'c6',w:5}
+        ]},
+        { label:'COM QUEM', words:[{text:'com mamãe',emoji:'👩',color:'c6',w:5},{text:'com papai',emoji:'👨',color:'c3',w:5},{text:'com a família',emoji:'👨‍👩‍👦',color:'c7',w:4},{text:'com meu amigo',emoji:'👫',color:'c5',w:3},{text:'sozinho',emoji:'🙋',color:'c2',w:2}]}
       ]},
-      { label:'COM QUEM', words:[{text:'com mamãe',emoji:'👩',color:'c6',w:5},{text:'com papai',emoji:'👨',color:'c3',w:5},{text:'com a família',emoji:'👨‍👩‍👦',color:'c7',w:4},{text:'com meu amigo',emoji:'👫',color:'c5',w:3},{text:'sozinho',emoji:'🙋',color:'c2',w:2}]}
-    ]},
-    { id:'q3', text:'O que você quer comer?', emoji:'🍽️', color:'c1', steps:[
-      { label:'EU', fixed:true, words:[{text:'Eu',emoji:'🧒',color:'c5',w:1}]},
-      { label:'QUERO', words:[{text:'quero comer',emoji:'😋',color:'c2',w:5},{text:'tenho fome de',emoji:'🤤',color:'c1',w:3}]},
-      { label:'O QUÊ', words:[
-        {text:'pizza',emoji:'🍕',color:'c1',w:5},
-        {text:'pipoca',emoji:'🍿',color:'c7',w:5},
-        {text:'linguiça',emoji:'🌭',color:'c2',w:4},
-        {text:'frango',emoji:'🍗',color:'c2',w:4},
-        {text:'macarrão',emoji:'🍝',color:'c2',w:4},
-        {text:'arroz e feijão',emoji:'🍚',color:'c5',w:4},
-        {text:'fruta',emoji:'🍎',color:'c1',w:3},
-        {text:'suco',emoji:'🥤',color:'c5',w:3}
+      { id:'f3', text:'O que você quer comer?', emoji:'🍽️', color:'c1', steps:[
+        { label:'EU', fixed:true, words:[{text:'Eu',emoji:'🧒',color:'c5',w:1}]},
+        { label:'QUERO', words:[{text:'quero comer',emoji:'😋',color:'c2',w:5},{text:'tenho fome de',emoji:'🤤',color:'c1',w:3}]},
+        { label:'O QUÊ', words:[
+          {text:'pizza',emoji:'🍕',color:'c1',w:5},{text:'pipoca',emoji:'🍿',color:'c7',w:5},
+          {text:'linguiça',emoji:'🌭',color:'c2',w:4},{text:'frango',emoji:'🍗',color:'c2',w:4},
+          {text:'macarrão',emoji:'🍝',color:'c2',w:4},{text:'arroz e feijão',emoji:'🍚',color:'c5',w:4},
+          {text:'fruta',emoji:'🍎',color:'c1',w:3},{text:'suco',emoji:'🥤',color:'c5',w:3}
+        ]}
+      ]},
+      { id:'f4', text:'O que você gosta?', emoji:'❤️', color:'c6', steps:[
+        { label:'EU', fixed:true, words:[{text:'Eu',emoji:'🧒',color:'c5',w:1}]},
+        { label:'SENTIMENTO', words:[{text:'gosto muito de',emoji:'😊',color:'c5',w:5},{text:'adoro',emoji:'😍',color:'c6',w:4},{text:'amo',emoji:'❤️',color:'c1',w:3}]},
+        { label:'O QUÊ', words:[{text:'animais',emoji:'🐶',color:'c5',w:5},{text:'dinossauros',emoji:'🦕',color:'c5',w:4},{text:'música',emoji:'🎵',color:'c4',w:4},{text:'esporte',emoji:'⚽',color:'c5',w:3},{text:'pintura',emoji:'🎨',color:'c6',w:3},{text:'histórias',emoji:'📖',color:'c2',w:3},{text:'videogame',emoji:'🎮',color:'c3',w:5},{text:'carros',emoji:'🚗',color:'c1',w:3},{text:'super-heróis',emoji:'🦸',color:'c4',w:4},{text:'parquinho',emoji:'🛝',color:'c7',w:4},{text:'piscina',emoji:'🏊',color:'c8',w:3},{text:'bichos',emoji:'🐸',color:'c5',w:3}]},
+        { label:'MUITO', words:[{text:'muito!',emoji:'🔥',color:'c1',w:5},{text:'demais!',emoji:'💥',color:'c2',w:4},{text:'bastante',emoji:'💪',color:'c3',w:3},{text:'um pouquinho',emoji:'🤏',color:'c5',w:2}]}
+      ]},
+      { id:'f5', text:'Como você está?', emoji:'😊', color:'c5', steps:[
+        { label:'EU', fixed:true, words:[{text:'Eu',emoji:'🧒',color:'c5',w:1}]},
+        { label:'ESTOU', words:[{text:'estou',emoji:'💬',color:'c3',w:5},{text:'me sinto',emoji:'🫀',color:'c6',w:3}]},
+        { label:'SENTIMENTO', words:[{text:'feliz!',emoji:'😄',color:'c7',w:5},{text:'animado!',emoji:'🤩',color:'c1',w:4},{text:'cansado',emoji:'😴',color:'c8',w:3},{text:'com fome',emoji:'😋',color:'c2',w:4},{text:'com sono',emoji:'🥱',color:'c4',w:3},{text:'bem!',emoji:'👍',color:'c5',w:5},{text:'com dor',emoji:'🤕',color:'c1',w:2},{text:'com saudade',emoji:'🥺',color:'c6',w:2},{text:'assustado',emoji:'😨',color:'c4',w:2},{text:'com raiva',emoji:'😤',color:'c1',w:2}]}
+      ]},
+      { id:'f6', text:'O que você precisa?', emoji:'🙋', color:'c4', steps:[
+        { label:'EU', fixed:true, words:[{text:'Eu',emoji:'🧒',color:'c5',w:1}]},
+        { label:'PRECISO', words:[{text:'preciso de',emoji:'🆘',color:'c1',w:5},{text:'quero',emoji:'🙏',color:'c4',w:4},{text:'gostaria de',emoji:'💭',color:'c3',w:2}]},
+        { label:'O QUÊ', words:[{text:'ajuda',emoji:'🤝',color:'c5',w:5},{text:'água',emoji:'💧',color:'c8',w:5},{text:'ir ao banheiro',emoji:'🚽',color:'c2',w:4},{text:'descansar',emoji:'💤',color:'c4',w:3},{text:'um abraço',emoji:'🤗',color:'c6',w:4},{text:'atenção',emoji:'👀',color:'c7',w:3},{text:'meu brinquedo',emoji:'🧸',color:'c1',w:3},{text:'um lanche',emoji:'🍌',color:'c2',w:4},{text:'música',emoji:'🎵',color:'c4',w:3}]},
+        { label:'POR FAVOR', words:[{text:'por favor 🙏',emoji:'💛',color:'c7',w:5},{text:'obrigado! 😊',emoji:'💚',color:'c5',w:3}]}
+      ]},
+      { id:'f7', text:'O que vai acontecer?', emoji:'🌟', color:'c7', steps:[
+        { label:'EU', fixed:true, words:[{text:'Eu',emoji:'🧒',color:'c5',w:1}]},
+        { label:'VOU', words:[{text:'vou',emoji:'⏩',color:'c3',w:5},{text:'vou conseguir',emoji:'💪',color:'c5',w:3}]},
+        { label:'AÇÃO', words:[{text:'aprender',emoji:'📚',color:'c3',w:5},{text:'crescer',emoji:'📈',color:'c5',w:4},{text:'brincar muito',emoji:'🎉',color:'c7',w:5},{text:'fazer amigos',emoji:'👫',color:'c6',w:4},{text:'ser feliz',emoji:'😄',color:'c1',w:5},{text:'ir à escola',emoji:'🏫',color:'c2',w:4},{text:'viajar',emoji:'✈️',color:'c8',w:3},{text:'nadar',emoji:'🏊',color:'c8',w:3},{text:'jogar futebol',emoji:'⚽',color:'c5',w:4}]},
+        { label:'QUANDO', words:[{text:'amanhã!',emoji:'🌅',color:'c2',w:5},{text:'hoje à tarde',emoji:'🌇',color:'c6',w:4},{text:'no fim de semana',emoji:'🎉',color:'c7',w:4},{text:'nas férias',emoji:'🏖️',color:'c8',w:3},{text:'sempre!',emoji:'♾️',color:'c4',w:3}]}
       ]}
-    ]},
-    { id:'q4', text:'O que você gosta?', emoji:'❤️', color:'c6', steps:[
-      { label:'EU', fixed:true, words:[{text:'Eu',emoji:'🧒',color:'c5',w:1}]},
-      { label:'SENTIMENTO', words:[{text:'gosto muito de',emoji:'😊',color:'c5',w:5},{text:'adoro',emoji:'😍',color:'c6',w:4},{text:'amo',emoji:'❤️',color:'c1',w:3}]},
-      { label:'O QUÊ', words:[{text:'animais',emoji:'🐶',color:'c5',w:5},{text:'dinossauros',emoji:'🦕',color:'c5',w:4},{text:'música',emoji:'🎵',color:'c4',w:4},{text:'esporte',emoji:'⚽',color:'c5',w:3},{text:'pintura',emoji:'🎨',color:'c6',w:3},{text:'histórias',emoji:'📖',color:'c2',w:3},{text:'videogame',emoji:'🎮',color:'c3',w:5},{text:'carros',emoji:'🚗',color:'c1',w:3},{text:'super-heróis',emoji:'🦸',color:'c4',w:4},{text:'parquinho',emoji:'🛝',color:'c7',w:4},{text:'piscina',emoji:'🏊',color:'c8',w:3},{text:'bichos',emoji:'🐸',color:'c5',w:3}]},
-      { label:'MUITO', words:[{text:'muito!',emoji:'🔥',color:'c1',w:5},{text:'demais!',emoji:'💥',color:'c2',w:4},{text:'bastante',emoji:'💪',color:'c3',w:3},{text:'um pouquinho',emoji:'🤏',color:'c5',w:2}]}
-    ]},
-    { id:'q5', text:'Como você está?', emoji:'😊', color:'c5', steps:[
-      { label:'EU', fixed:true, words:[{text:'Eu',emoji:'🧒',color:'c5',w:1}]},
-      { label:'ESTOU', words:[{text:'estou',emoji:'💬',color:'c3',w:5},{text:'me sinto',emoji:'🫀',color:'c6',w:3}]},
-      { label:'SENTIMENTO', words:[{text:'feliz!',emoji:'😄',color:'c7',w:5},{text:'animado!',emoji:'🤩',color:'c1',w:4},{text:'cansado',emoji:'😴',color:'c8',w:3},{text:'com fome',emoji:'😋',color:'c2',w:4},{text:'com sono',emoji:'🥱',color:'c4',w:3},{text:'bem!',emoji:'👍',color:'c5',w:5},{text:'com dor',emoji:'🤕',color:'c1',w:2},{text:'com saudade',emoji:'🥺',color:'c6',w:2},{text:'assustado',emoji:'😨',color:'c4',w:2},{text:'com raiva',emoji:'😤',color:'c1',w:2}]}
-    ]},
-    { id:'q6', text:'O que você precisa?', emoji:'🙋', color:'c4', steps:[
-      { label:'EU', fixed:true, words:[{text:'Eu',emoji:'🧒',color:'c5',w:1}]},
-      { label:'PRECISO', words:[{text:'preciso de',emoji:'🆘',color:'c1',w:5},{text:'quero',emoji:'🙏',color:'c4',w:4},{text:'gostaria de',emoji:'💭',color:'c3',w:2}]},
-      { label:'O QUÊ', words:[{text:'ajuda',emoji:'🤝',color:'c5',w:5},{text:'água',emoji:'💧',color:'c8',w:5},{text:'ir ao banheiro',emoji:'🚽',color:'c2',w:4},{text:'descansar',emoji:'💤',color:'c4',w:3},{text:'um abraço',emoji:'🤗',color:'c6',w:4},{text:'atenção',emoji:'👀',color:'c7',w:3},{text:'meu brinquedo',emoji:'🧸',color:'c1',w:3},{text:'um lanche',emoji:'🍌',color:'c2',w:4},{text:'música',emoji:'🎵',color:'c4',w:3}]},
-      { label:'POR FAVOR', words:[{text:'por favor 🙏',emoji:'💛',color:'c7',w:5},{text:'obrigado! 😊',emoji:'💚',color:'c5',w:3}]}
-    ]},
-    { id:'q7', text:'O que vai acontecer?', emoji:'🌟', color:'c7', steps:[
-      { label:'EU', fixed:true, words:[{text:'Eu',emoji:'🧒',color:'c5',w:1}]},
-      { label:'VOU', words:[{text:'vou',emoji:'⏩',color:'c3',w:5},{text:'vou conseguir',emoji:'💪',color:'c5',w:3}]},
-      { label:'AÇÃO', words:[{text:'aprender',emoji:'📚',color:'c3',w:5},{text:'crescer',emoji:'📈',color:'c5',w:4},{text:'brincar muito',emoji:'🎉',color:'c7',w:5},{text:'fazer amigos',emoji:'👫',color:'c6',w:4},{text:'ser feliz',emoji:'😄',color:'c1',w:5},{text:'ir à escola',emoji:'🏫',color:'c2',w:4},{text:'viajar',emoji:'✈️',color:'c8',w:3},{text:'nadar',emoji:'🏊',color:'c8',w:3},{text:'jogar futebol',emoji:'⚽',color:'c5',w:4}]},
-      { label:'QUANDO', words:[{text:'amanhã!',emoji:'🌅',color:'c2',w:5},{text:'hoje à tarde',emoji:'🌇',color:'c6',w:4},{text:'no fim de semana',emoji:'🎉',color:'c7',w:4},{text:'nas férias',emoji:'🏖️',color:'c8',w:3},{text:'sempre!',emoji:'♾️',color:'c4',w:3}]}
-    ]}
-  ]};
+    ],
+    past: [
+      { id:'p1', text:'O que você fez?', emoji:'🤔', color:'c4', steps:[
+        { label:'EU', fixed:true, words:[{text:'Eu',emoji:'🧒',color:'c5',w:1}]},
+        { label:'FIZ', words:[{text:'fui',emoji:'🚶',color:'c4',w:5},{text:'gostei de',emoji:'❤️',color:'c1',w:3},{text:'adorei',emoji:'😍',color:'c6',w:2}]},
+        { label:'O QUÊ', words:[
+          {text:'brincar',emoji:'🎮',color:'c4',w:5},{text:'no parque',emoji:'🌳',color:'c5',w:4},
+          {text:'na brinquedoteca',emoji:'🧸',color:'c6',w:4},{text:'no tablet',emoji:'📱',color:'c8',w:4},
+          {text:'dançar',emoji:'💃',color:'c1',w:3},{text:'cantar',emoji:'🎵',color:'c4',w:3},
+          {text:'correr',emoji:'🏃',color:'c5',w:3},{text:'pular',emoji:'🦘',color:'c2',w:2},
+          {text:'nadar',emoji:'🏊',color:'c8',w:2},{text:'ver TV',emoji:'📺',color:'c7',w:4},
+          {text:'ler livros',emoji:'📚',color:'c2',w:2},{text:'jogar bola',emoji:'⚽',color:'c5',w:4}
+        ]},
+        { label:'QUANDO', words:[{text:'ontem',emoji:'📅',color:'c4',w:5},{text:'hoje de manhã',emoji:'🌅',color:'c3',w:4},{text:'no fim de semana',emoji:'🎉',color:'c5',w:3},{text:'semana passada',emoji:'🗓️',color:'c6',w:2},{text:'de tarde',emoji:'🌇',color:'c2',w:2}]}
+      ]},
+      { id:'p2', text:'Onde você foi?', emoji:'🗺️', color:'c4', steps:[
+        { label:'EU', fixed:true, words:[{text:'Eu',emoji:'🧒',color:'c5',w:1}]},
+        { label:'FUI', words:[{text:'fui',emoji:'🚶',color:'c4',w:5},{text:'fui visitar',emoji:'👉',color:'c6',w:3}]},
+        { label:'PARA ONDE', words:[
+          {text:'ao parque',emoji:'🌳',color:'c5',w:5},{text:'à escola',emoji:'🏫',color:'c3',w:5},
+          {text:'à casa da vovó',emoji:'👵',color:'c6',w:4},{text:'ao mercado',emoji:'🛒',color:'c2',w:3},
+          {text:'à praia',emoji:'🏖️',color:'c8',w:3},{text:'ao cinema',emoji:'🎬',color:'c4',w:2},
+          {text:'à piscina',emoji:'🏊',color:'c8',w:2},{text:'ao parquinho',emoji:'🛝',color:'c5',w:4},
+          {text:'ao médico',emoji:'🏥',color:'c1',w:2},{text:'ao shopping',emoji:'🏬',color:'c7',w:3},
+          {text:'à pizzaria',emoji:'🍕',color:'c1',w:4},{text:'ao pula-pula',emoji:'🤸',color:'c6',w:5}
+        ]},
+        { label:'COM QUEM', words:[{text:'com mamãe',emoji:'👩',color:'c6',w:5},{text:'com papai',emoji:'👨',color:'c4',w:5},{text:'com a família',emoji:'👨‍👩‍👦',color:'c7',w:4},{text:'com meu amigo',emoji:'👫',color:'c5',w:3},{text:'sozinho',emoji:'🙋',color:'c2',w:2}]}
+      ]},
+      { id:'p3', text:'O que você comeu?', emoji:'🍽️', color:'c2', steps:[
+        { label:'EU', fixed:true, words:[{text:'Eu',emoji:'🧒',color:'c5',w:1}]},
+        { label:'COMI', words:[{text:'comi',emoji:'😋',color:'c2',w:5},{text:'tomei',emoji:'🥤',color:'c8',w:3}]},
+        { label:'O QUÊ', words:[
+          {text:'pizza',emoji:'🍕',color:'c1',w:5},{text:'pipoca',emoji:'🍿',color:'c7',w:5},
+          {text:'linguiça',emoji:'🌭',color:'c2',w:4},{text:'frango',emoji:'🍗',color:'c2',w:4},
+          {text:'macarrão',emoji:'🍝',color:'c2',w:4},{text:'arroz e feijão',emoji:'🍚',color:'c5',w:4},
+          {text:'fruta',emoji:'🍎',color:'c1',w:3},{text:'suco',emoji:'🥤',color:'c5',w:3}
+        ]}
+      ]},
+      { id:'p4', text:'O que você gostou?', emoji:'❤️', color:'c1', steps:[
+        { label:'EU', fixed:true, words:[{text:'Eu',emoji:'🧒',color:'c5',w:1}]},
+        { label:'SENTI', words:[{text:'gostei muito de',emoji:'😊',color:'c5',w:5},{text:'adorei',emoji:'😍',color:'c6',w:4},{text:'amei',emoji:'❤️',color:'c1',w:3}]},
+        { label:'O QUÊ', words:[{text:'animais',emoji:'🐶',color:'c5',w:5},{text:'dinossauros',emoji:'🦕',color:'c5',w:4},{text:'música',emoji:'🎵',color:'c4',w:4},{text:'esporte',emoji:'⚽',color:'c5',w:3},{text:'pintura',emoji:'🎨',color:'c6',w:3},{text:'histórias',emoji:'📖',color:'c2',w:3},{text:'videogame',emoji:'🎮',color:'c3',w:5},{text:'carros',emoji:'🚗',color:'c1',w:3},{text:'super-heróis',emoji:'🦸',color:'c4',w:4},{text:'parquinho',emoji:'🛝',color:'c7',w:4},{text:'piscina',emoji:'🏊',color:'c8',w:3},{text:'bichos',emoji:'🐸',color:'c5',w:3}]},
+        { label:'MUITO', words:[{text:'muito!',emoji:'🔥',color:'c1',w:5},{text:'demais!',emoji:'💥',color:'c2',w:4},{text:'bastante',emoji:'💪',color:'c3',w:3},{text:'um pouquinho',emoji:'🤏',color:'c5',w:2}]}
+      ]},
+      { id:'p5', text:'Como você estava?', emoji:'😊', color:'c5', steps:[
+        { label:'EU', fixed:true, words:[{text:'Eu',emoji:'🧒',color:'c5',w:1}]},
+        { label:'ESTAVA', words:[{text:'estava',emoji:'💬',color:'c4',w:5},{text:'me sentia',emoji:'🫀',color:'c6',w:3}]},
+        { label:'SENTIMENTO', words:[{text:'feliz!',emoji:'😄',color:'c7',w:5},{text:'animado!',emoji:'🤩',color:'c1',w:4},{text:'cansado',emoji:'😴',color:'c8',w:3},{text:'com fome',emoji:'😋',color:'c2',w:4},{text:'com sono',emoji:'🥱',color:'c4',w:3},{text:'bem!',emoji:'👍',color:'c5',w:5},{text:'com dor',emoji:'🤕',color:'c1',w:2},{text:'com saudade',emoji:'🥺',color:'c6',w:2},{text:'assustado',emoji:'😨',color:'c4',w:2},{text:'com raiva',emoji:'😤',color:'c1',w:2}]}
+      ]},
+      { id:'p6', text:'O que você precisou?', emoji:'🙋', color:'c4', steps:[
+        { label:'EU', fixed:true, words:[{text:'Eu',emoji:'🧒',color:'c5',w:1}]},
+        { label:'PRECISEI', words:[{text:'precisei de',emoji:'🆘',color:'c1',w:5},{text:'quis',emoji:'🙏',color:'c4',w:4},{text:'pedi',emoji:'💭',color:'c3',w:3}]},
+        { label:'O QUÊ', words:[{text:'ajuda',emoji:'🤝',color:'c5',w:5},{text:'água',emoji:'💧',color:'c8',w:5},{text:'ir ao banheiro',emoji:'🚽',color:'c2',w:4},{text:'descansar',emoji:'💤',color:'c4',w:3},{text:'um abraço',emoji:'🤗',color:'c6',w:4},{text:'atenção',emoji:'👀',color:'c7',w:3},{text:'meu brinquedo',emoji:'🧸',color:'c1',w:3},{text:'um lanche',emoji:'🍌',color:'c2',w:4},{text:'música',emoji:'🎵',color:'c4',w:3}]},
+        { label:'POR FAVOR', words:[{text:'obrigado! 😊',emoji:'💚',color:'c5',w:5},{text:'por favor 🙏',emoji:'💛',color:'c7',w:3}]}
+      ]},
+      { id:'p7', text:'O que aconteceu?', emoji:'🌟', color:'c6', steps:[
+        { label:'EU', fixed:true, words:[{text:'Eu',emoji:'🧒',color:'c5',w:1}]},
+        { label:'FIZ', words:[{text:'fui',emoji:'⏪',color:'c4',w:5},{text:'consegui',emoji:'💪',color:'c5',w:3}]},
+        { label:'AÇÃO', words:[{text:'aprender',emoji:'📚',color:'c3',w:5},{text:'crescer',emoji:'📈',color:'c5',w:4},{text:'brincar muito',emoji:'🎉',color:'c7',w:5},{text:'fazer amigos',emoji:'👫',color:'c6',w:4},{text:'ficar feliz',emoji:'😄',color:'c1',w:5},{text:'ir à escola',emoji:'🏫',color:'c2',w:4},{text:'viajar',emoji:'✈️',color:'c8',w:3},{text:'nadar',emoji:'🏊',color:'c8',w:3},{text:'jogar futebol',emoji:'⚽',color:'c5',w:4}]},
+        { label:'QUANDO', words:[{text:'ontem!',emoji:'📅',color:'c4',w:5},{text:'hoje de manhã',emoji:'🌅',color:'c3',w:4},{text:'no fim de semana',emoji:'🎉',color:'c7',w:4},{text:'nas férias',emoji:'🏖️',color:'c8',w:3},{text:'semana passada',emoji:'🗓️',color:'c6',w:3}]}
+      ]}
+    ]
+  };
 }
 
-// Always reset to updated default data (force refresh of word lists)
-const STORAGE_KEY = 'ngram_v3';
+const STORAGE_KEY = 'ngram_v4';
 let data = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null') || defaultData();
 function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
 
-// ===== NAV =====
+// =================== STATE ===================
+let currentTense = 'future'; // 'future' | 'past'
+let currentQ = null, stepIndex = 0, sentence = [];
+
+// =================== NAV ===================
 function goTo(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('screen-' + id).classList.add('active');
@@ -392,11 +488,28 @@ function goTo(id) {
   if (id === 'settings') renderSettings();
 }
 
-// ===== HOME =====
+// =================== TENSE SELECT ===================
+function selectTense(tense) {
+  currentTense = tense;
+  goTo('home');
+}
+
+// =================== HOME ===================
 function renderHome() {
+  const isPast = currentTense === 'past';
+  // Banner
+  const banner = document.getElementById('home-tense-banner');
+  banner.className = 'home-tense-banner ' + currentTense;
+  document.getElementById('htb-icon').textContent = isPast ? '⏪' : '⏩';
+  document.getElementById('htb-title').textContent = isPast ? 'Passado' : 'Presente e Futuro';
+  document.getElementById('htb-sub').textContent = 'Escolha uma pergunta para montar sua frase';
+  document.getElementById('home-title').textContent = isPast ? 'Perguntas — Passado ⏪' : 'Perguntas — Futuro ⏩';
+
+  // Questions
+  const questions = data[currentTense] || [];
   const c = document.getElementById('home-questions');
   c.innerHTML = '';
-  data.questions.forEach(q => {
+  questions.forEach(q => {
     const col = COLORS[q.color] || COLORS.c3;
     const btn = document.createElement('button');
     btn.className = 'q-btn';
@@ -407,14 +520,17 @@ function renderHome() {
     btn.onclick = () => startBuilder(q.id);
     c.appendChild(btn);
   });
+
+  // Celebrate modal home btn color
+  const hbtn = document.getElementById('modal-home-btn');
+  if (isPast) { hbtn.style.background = 'linear-gradient(135deg,#7C5CBF,#5B3FA0)'; }
+  else { hbtn.style.background = 'linear-gradient(135deg,#FF9F43,#FF6B6B)'; }
 }
-renderHome();
 
-// ===== BUILDER =====
-let currentQ = null, stepIndex = 0, sentence = [];
-
+// =================== BUILDER ===================
 function startBuilder(qid) {
-  currentQ = data.questions.find(q => q.id === qid);
+  const questions = data[currentTense] || [];
+  currentQ = questions.find(q => q.id === qid);
   if (!currentQ) return;
   stepIndex = 0; sentence = [];
   goTo('builder');
@@ -426,9 +542,8 @@ function startBuilder(qid) {
 
 function autoAdvanceFixed() {
   while (stepIndex < currentQ.steps.length && currentQ.steps[stepIndex].fixed) {
-    const w = currentQ.steps[stepIndex].words[0];
-    sentence.push(w); stepIndex++;
-    renderSentence();
+    sentence.push(currentQ.steps[stepIndex].words[0]);
+    stepIndex++; renderSentence();
   }
   renderStep();
 }
@@ -451,7 +566,10 @@ function renderSentence() {
     chip.className = 'sentence-chip';
     chip.style.background = col.bg; chip.style.color = col.text;
     chip.innerHTML = `<span>${w.emoji}</span>${w.text}<span class="chip-x">✕</span>`;
-    chip.onclick = () => { sentence.splice(idx); stepIndex = idx; renderSentence(); renderStep(); if(stepIndex<currentQ.steps.length && currentQ.steps[stepIndex].fixed) autoAdvanceFixed(); };
+    chip.onclick = () => {
+      sentence.splice(idx); stepIndex = idx; renderSentence(); renderStep();
+      if (stepIndex < currentQ.steps.length && currentQ.steps[stepIndex].fixed) autoAdvanceFixed();
+    };
     container.appendChild(chip);
   });
 }
@@ -460,10 +578,14 @@ function renderStep() {
   const sb = document.getElementById('step-bar');
   const cl = document.getElementById('cat-label');
   const grid = document.getElementById('word-grid');
+  const isPast = currentTense === 'past';
   sb.innerHTML = '';
   currentQ.steps.forEach((_,i) => {
     const d = document.createElement('div');
-    d.className = 'step-dot' + (i < stepIndex ? ' done' : i === stepIndex ? ' active' : '');
+    let cls = 'step-dot';
+    if (i < stepIndex) cls += ' done' + (isPast ? ' past-mode' : '');
+    else if (i === stepIndex) cls += ' active' + (isPast ? ' past-mode' : '');
+    d.className = cls;
     sb.appendChild(d);
   });
   if (stepIndex >= currentQ.steps.length) {
@@ -489,7 +611,11 @@ function renderStep() {
 }
 
 function skipStep() {
-  if (stepIndex < currentQ.steps.length) { stepIndex++; if(stepIndex<currentQ.steps.length && currentQ.steps[stepIndex].fixed) autoAdvanceFixed(); else renderStep(); }
+  if (stepIndex < currentQ.steps.length) {
+    stepIndex++;
+    if (stepIndex < currentQ.steps.length && currentQ.steps[stepIndex].fixed) autoAdvanceFixed();
+    else renderStep();
+  }
 }
 function clearSentence() { sentence = []; stepIndex = 0; renderSentence(); renderStep(); autoAdvanceFixed(); }
 
@@ -521,39 +647,52 @@ function launchConfetti() {
   }
 }
 
-// ===== SETTINGS TABS =====
-function switchTab(tabId) {
+// =================== SETTINGS ===================
+function switchTab(tabId, el) {
   document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.tab-pill').forEach(p => p.classList.remove('active'));
   document.getElementById(tabId).classList.add('active');
-  event.target.classList.add('active');
+  el.classList.add('active');
   if (tabId === 'tab-edit-word') populateEditSelectors();
+}
+
+// All questions combined for settings
+function allQuestions() {
+  return [
+    ...data.future.map(q => ({...q, tense:'future'})),
+    ...data.past.map(q => ({...q, tense:'past'}))
+  ];
 }
 
 let selectedQEmoji = '🤔';
 function renderSettings() {
-  // Questions list
   const ql = document.getElementById('questions-list');
   ql.innerHTML = '';
-  data.questions.forEach((q,idx) => {
+  allQuestions().forEach((q) => {
+    const tenseLabel = q.tense === 'past' ? '⏪ Passado' : '⏩ Futuro';
     const div = document.createElement('div'); div.className='item-row';
-    div.innerHTML = `<div class="item-row-info"><strong>${q.emoji} ${q.text}</strong><span>${q.steps.length} etapas • ${q.steps.reduce((a,s)=>a+s.words.length,0)} palavras</span></div><button class="del-btn" onclick="deleteQuestion(${idx})">🗑️</button>`;
+    div.innerHTML = `<div class="item-row-info"><strong>${q.emoji} ${q.text}</strong><span>${tenseLabel} · ${q.steps.length} etapas · ${q.steps.reduce((a,s)=>a+s.words.length,0)} palavras</span></div><button class="del-btn" onclick="deleteQuestion('${q.tense}','${q.id}')">🗑️</button>`;
     ql.appendChild(div);
   });
-  // Word add selectors
   const wq = document.getElementById('new-w-q');
   wq.innerHTML = '';
-  data.questions.forEach(q => { const o=document.createElement('option'); o.value=q.id; o.textContent=q.emoji+' '+q.text; wq.appendChild(o); });
+  allQuestions().forEach(q => {
+    const o=document.createElement('option');
+    o.value=q.tense+'|'+q.id;
+    o.textContent=(q.tense==='past'?'⏪ ':'⏩ ')+q.text;
+    wq.appendChild(o);
+  });
   updateStepSelector();
-  // Emoji picker
   document.querySelectorAll('#q-emoji-options .ep-btn').forEach(b => {
     b.onclick = () => { document.querySelectorAll('#q-emoji-options .ep-btn').forEach(x=>x.classList.remove('selected')); b.classList.add('selected'); selectedQEmoji=b.dataset.e; };
   });
 }
 
 function updateStepSelector() {
-  const qid = document.getElementById('new-w-q').value;
-  const q = data.questions.find(x => x.id===qid);
+  const val = document.getElementById('new-w-q').value;
+  if (!val) return;
+  const [tense, qid] = val.split('|');
+  const q = data[tense] && data[tense].find(x=>x.id===qid);
   const sel = document.getElementById('new-w-step'); sel.innerHTML='';
   if (!q) return;
   q.steps.forEach((s,i) => { const o=document.createElement('option'); o.value=i; o.textContent=`Passo ${i+1}: ${s.label}`; sel.appendChild(o); });
@@ -562,8 +701,10 @@ function updateStepSelector() {
 function addQuestion() {
   const text = document.getElementById('new-q-text').value.trim();
   const color = document.getElementById('new-q-color').value;
+  const tense = document.getElementById('new-q-tense').value;
   if (!text) { showToast('⚠️ Escreva a pergunta!'); return; }
-  data.questions.push({ id:'q'+Date.now(), text, emoji:selectedQEmoji, color, steps:[
+  const prefix = tense === 'past' ? 'p' : 'f';
+  data[tense].push({ id: prefix + Date.now(), text, emoji: selectedQEmoji, color, steps:[
     { label:'EU', fixed:true, words:[{text:'Eu',emoji:'🧒',color:'c5',w:1}]},
     { label:'RESPOSTA', words:[]}
   ]});
@@ -572,19 +713,22 @@ function addQuestion() {
   renderSettings();
 }
 
-function deleteQuestion(idx) {
-  if (data.questions.length<=1) { showToast('⚠️ Mantenha ao menos uma pergunta!'); return; }
-  data.questions.splice(idx,1); saveData(); renderSettings(); showToast('🗑️ Removida');
+function deleteQuestion(tense, qid) {
+  if (data[tense].length <= 1) { showToast('⚠️ Mantenha ao menos uma pergunta!'); return; }
+  data[tense] = data[tense].filter(q => q.id !== qid);
+  saveData(); renderSettings(); showToast('🗑️ Removida');
 }
 
 function addWord() {
-  const qid = document.getElementById('new-w-q').value;
+  const val = document.getElementById('new-w-q').value;
+  if (!val) return;
+  const [tense, qid] = val.split('|');
   const si = parseInt(document.getElementById('new-w-step').value);
   const text = document.getElementById('new-w-text').value.trim();
   const emoji = document.getElementById('new-w-emoji').value.trim()||'💬';
   const color = document.getElementById('new-w-color').value;
   if (!text) { showToast('⚠️ Escreva a palavra!'); return; }
-  const q = data.questions.find(x=>x.id===qid);
+  const q = data[tense] && data[tense].find(x=>x.id===qid);
   if (!q) return;
   q.steps[si].words.push({text,emoji,color,w:3});
   saveData(); showToast('✅ Palavra adicionada!');
@@ -592,84 +736,75 @@ function addWord() {
   document.getElementById('new-w-emoji').value='';
 }
 
-// ===== EDIT EXISTING WORDS =====
+// Edit existing words
 function populateEditSelectors() {
   const qs = document.getElementById('edit-q-select');
   const prev = qs.value;
   qs.innerHTML = '';
-  data.questions.forEach(q => { const o=document.createElement('option'); o.value=q.id; o.textContent=q.emoji+' '+q.text; qs.appendChild(o); });
+  allQuestions().forEach(q => {
+    const o=document.createElement('option');
+    o.value=q.tense+'|'+q.id;
+    o.textContent=(q.tense==='past'?'⏪ ':'⏩ ')+q.text;
+    qs.appendChild(o);
+  });
   if (prev) qs.value = prev;
   populateEditStepSelector();
 }
 
 function populateEditStepSelector() {
-  const qid = document.getElementById('edit-q-select').value;
-  const q = data.questions.find(x=>x.id===qid);
-  const ss = document.getElementById('edit-step-select');
-  ss.innerHTML = '';
+  const val = document.getElementById('edit-q-select').value;
+  if (!val) return;
+  const [tense, qid] = val.split('|');
+  const q = data[tense] && data[tense].find(x=>x.id===qid);
+  const ss = document.getElementById('edit-step-select'); ss.innerHTML='';
   if (!q) return;
   q.steps.forEach((s,i) => { const o=document.createElement('option'); o.value=i; o.textContent=`Passo ${i+1}: ${s.label}`; ss.appendChild(o); });
-  document.getElementById('edit-q-select').onchange = () => { populateEditStepSelector(); renderWordEditList(); };
-  document.getElementById('edit-step-select').onchange = renderWordEditList;
   renderWordEditList();
 }
 
 function renderWordEditList() {
-  const qid = document.getElementById('edit-q-select').value;
+  const val = document.getElementById('edit-q-select').value;
+  if (!val) return;
+  const [tense, qid] = val.split('|');
   const si = parseInt(document.getElementById('edit-step-select').value);
-  const q = data.questions.find(x=>x.id===qid);
+  const q = data[tense] && data[tense].find(x=>x.id===qid);
   const list = document.getElementById('word-edit-list');
   list.innerHTML = '';
   if (!q || isNaN(si)) return;
   const step = q.steps[si];
-  if (!step || !step.words.length) {
-    list.innerHTML = '<div style="text-align:center;color:#aaa;padding:20px;">Nenhuma palavra nesta etapa.</div>';
-    return;
-  }
+  if (!step || !step.words.length) { list.innerHTML = '<div style="text-align:center;color:#aaa;padding:20px;">Nenhuma palavra nesta etapa.</div>'; return; }
   step.words.forEach((w, wi) => {
     const col = COLORS[w.color] || COLORS.c3;
     const div = document.createElement('div'); div.className='word-edit-item';
-    div.innerHTML = `
-      <div class="we-emoji" style="background:${col.light};border-radius:12px;padding:4px;">${w.emoji}</div>
-      <div class="we-info"><strong>${w.text}</strong><small>${w.color} · peso ${w.w||3}</small></div>
-      <div class="we-actions">
-        <button class="edit-btn" onclick="openEditModal('${qid}',${si},${wi})">✏️</button>
-        <button class="del-btn" onclick="deleteWord('${qid}',${si},${wi})">🗑️</button>
-      </div>`;
+    div.innerHTML = `<div class="we-emoji" style="background:${col.light};border-radius:12px;padding:4px;">${w.emoji}</div><div class="we-info"><strong>${w.text}</strong><small>${w.color} · peso ${w.w||3}</small></div><div class="we-actions"><button class="edit-btn" onclick="openEditModal('${tense}','${qid}',${si},${wi})">✏️</button><button class="del-btn" onclick="deleteWord('${tense}','${qid}',${si},${wi})">🗑️</button></div>`;
     list.appendChild(div);
   });
 }
 
-let editTarget = null; // {qid, si, wi}
-function openEditModal(qid, si, wi) {
-  const q = data.questions.find(x=>x.id===qid);
+let editTarget = null;
+function openEditModal(tense, qid, si, wi) {
+  const q = data[tense] && data[tense].find(x=>x.id===qid);
   const w = q.steps[si].words[wi];
-  editTarget = {qid, si, wi};
+  editTarget = {tense, qid, si, wi};
   document.getElementById('ew-text').value = w.text;
   document.getElementById('ew-emoji').value = w.emoji;
   document.getElementById('ew-color').value = w.color;
   document.getElementById('edit-word-modal').classList.add('show');
 }
-function closeEditModal() {
-  document.getElementById('edit-word-modal').classList.remove('show');
-  editTarget = null;
-}
+function closeEditModal() { document.getElementById('edit-word-modal').classList.remove('show'); editTarget=null; }
 function saveWordEdit() {
   if (!editTarget) return;
-  const {qid, si, wi} = editTarget;
-  const q = data.questions.find(x=>x.id===qid);
+  const {tense, qid, si, wi} = editTarget;
+  const q = data[tense] && data[tense].find(x=>x.id===qid);
   const text = document.getElementById('ew-text').value.trim();
   const emoji = document.getElementById('ew-emoji').value.trim()||'💬';
   const color = document.getElementById('ew-color').value;
   if (!text) { showToast('⚠️ Escreva a palavra!'); return; }
   q.steps[si].words[wi] = {...q.steps[si].words[wi], text, emoji, color};
-  saveData();
-  closeEditModal();
-  renderWordEditList();
-  showToast('✅ Palavra atualizada!');
+  saveData(); closeEditModal(); renderWordEditList(); showToast('✅ Palavra atualizada!');
 }
-function deleteWord(qid, si, wi) {
-  const q = data.questions.find(x=>x.id===qid);
+function deleteWord(tense, qid, si, wi) {
+  const q = data[tense] && data[tense].find(x=>x.id===qid);
   q.steps[si].words.splice(wi,1);
   saveData(); renderWordEditList(); showToast('🗑️ Palavra removida');
 }
